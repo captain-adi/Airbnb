@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 function ListsCard({ data }) {
-
+  console.log("single data is : ", data.image.url)
   return (
     <div key={data?._id} className="mb-5">
       <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
