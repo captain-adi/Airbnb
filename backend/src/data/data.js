@@ -34,6 +34,7 @@ export const data = [
     price: 2500,
     location: "Florence",
     country: "Italy",
+    owner : '6813868a015009d4d510e56b'
   },
   {
     title: "Secluded Treehouse Getaway",
@@ -46,6 +47,7 @@ export const data = [
     price: 800,
     location: "Portland",
     country: "United States",
+     owner : '6813868a015009d4d510e56b'
   },
   {
     title: "Rustic Cabin by the Lake",
@@ -58,6 +60,7 @@ export const data = [
     price: 900,
     location: "Lake Tahoe",
     country: "United States",
+     owner : '6813868a015009d4d510e56b'
   },
   {
     title: "Ski-In/Ski-Out Chalet",
@@ -70,6 +73,7 @@ export const data = [
     price: 3000,
     location: "Verbier",
     country: "Switzerland",
+     owner : '6813868a015009d4d510e56b'
   },
   {
     title: "Safari Lodge in the Serengeti",
@@ -82,6 +86,7 @@ export const data = [
     price: 4000,
     location: "Serengeti National Park",
     country: "Tanzania",
+     owner : '6813868a015009d4d510e56b'
   },
   {
     title: "Charming Cottage in the Cotswolds",
@@ -94,6 +99,7 @@ export const data = [
     price: 1200,
     location: "Cotswolds",
     country: "United Kingdom",
+     owner : '6813868a015009d4d510e56b'
   },
   {
     title: "Mountain View Cabin in Banff",
@@ -106,6 +112,7 @@ export const data = [
     price: 1500,
     location: "Banff",
     country: "Canada",
+     owner : '6813868a015009d4d510e56b'
   },
   {
     title: "Tropical Villa in Phuket",
@@ -118,5 +125,6 @@ export const data = [
     price: 3000,
     location: "Phuket",
     country: "Thailand",
+     owner : '6813868a015009d4d510e56b'
   },
 ];

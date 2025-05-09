@@ -1,17 +1,26 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
+import { FaStar } from "react-icons/fa";
 import { Links, useNavigate, useParams } from "react-router-dom";
 import { Context } from "../context/store";
 import { Link } from "react-router-dom";
 import Button from "../components/Button";
 import { MdLocationOn } from "react-icons/md";
 import { MdCurrencyRupee } from "react-icons/md";
+import { ToastContainer, toast } from 'react-toastify';
+
 
 function Hotel() {
+  const notify = () => toast.warn("you are not logged In");
+  const [rating, setRating] = useState(0);
+  const [hover, setHover] = useState(0);
+  const [comment, setComment] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
   const { allData } = useContext(Context);
+ 
   const data = allData.find((d) => d._id == id);
   const { fetchdata } = useContext(Context);
+  
 
   const handleDelete = async (id) => {
     try {
@@ -21,14 +30,29 @@ function Hotel() {
       if (response.ok) {
         await fetchdata();
         navigate("/");
+      }else{
+        notify();
       }
     } catch (error) {
-      console.log(error);
+  
+      alert(error.message);// "You are not authorized"
     }
   };
+const deleteReview = async (reviewID) => {
+ const respose = await fetch(`/api/listing/${id}/review/${reviewID}`, {
+    method: "DELETE"
+  });
+  if(respose.ok){
+    fetchdata();
+    navigate(`/hotel/${id}`)
+  }else{
+    notify();
+  }
+};
 
   return (
-    <div className=" flex justify-center h-screen items-center">
+    <div className="flex flex-col justify-center mb-12 items-center">
+       <ToastContainer />
       <div key={data?._id} className="mb-5">
         <div className="w-full  bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
           <div className="w-full h-[50vh] overflow-hidden">
@@ -111,8 +135,9 @@ function Hotel() {
                 <MdCurrencyRupee /> {data?.price}
               </span>
             </div>
+           <span className="font-bold text-xl mt-5">{data?.owner?.username}</span>
             <div className="flex w-full  justify-end">
-              <Link to={`/listing/update/${id}`}>
+              <Link  to={`/listing/update/${id}`}>
                 <Button text="Edit" />
               </Link>
 
@@ -120,6 +145,122 @@ function Hotel() {
             </div>
           </div>
         </div>
+      </div>
+      <form
+        action=""
+        onSubmit={async (e) => {
+          e.preventDefault();
+          const response = await fetch(`/api/listing/${id}/review`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              review: {
+                comment,
+                rating,
+              },
+            }),
+          });
+         if(!response.ok){
+          notify()
+         }
+          fetchdata();
+        }}
+      >
+        <div className="w-[38vw] flex flex-col gap-4">
+          <h1 className="text-2xl font-bold">Leave Review</h1>
+
+          {/* Rating */}
+          <div className="flex flex-col gap-2">
+            <label className="font-medium">Rating</label>
+            <div className="flex gap-2">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <button
+                  key={star}
+                  type="button"
+                  onClick={() => setRating(star)}
+                  onMouseEnter={() => setHover(star)}
+                  onMouseLeave={() => setHover(0)}
+                  className="text-2xl focus:outline-none"
+                >
+                  <FaStar
+                    color={star <= (hover || rating) ? "#facc15" : "#e5e7eb"} // yellow-400 or gray-200
+                  />
+                </button>
+              ))}
+            </div>
+            <p className="text-sm text-gray-500">Selected Rating: {rating}</p>
+          </div>
+
+          {/* Comment */}
+          <div className="flex flex-col gap-2">
+            <label htmlFor="comment" className="font-medium">
+              Comment
+            </label>
+            <textarea
+            required
+              onChange={(e) => setComment(e.target.value)}
+              value={comment}
+              id="comment"
+              className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              rows="5"
+              placeholder="Type your message..."
+            ></textarea>
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="self-start px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+          >
+            Submit Review
+          </button>
+        </div>
+      </form>
+
+      {/* review sections  */}
+      <div className="mt-6 w-[38vw]">
+        <h2 className="text-xl font-semibold mb-4">User Reviews</h2>
+
+        {data?.reviews.length === 0 ? (
+          <p className="text-gray-500">No reviews yet.</p>
+        ) : (
+          <div className="flex flex-col gap-4">
+            {data?.reviews.map((review, index) => (
+              <div
+                key={index}
+                className="border p-4 rounded-lg shadow-sm bg-white"
+              >
+                {/* Star Rating */}
+                 <p className="text-gray-800 font-bold uppercase">{review.author.username}</p>
+                <div className="flex justify-between">
+                  <div className="flex items-center gap-1 mb-2">
+                    {[...Array(5)].map((_, i) => (
+                      <FaStar
+                        key={i}
+                        size={18}
+                        color={i < review?.rating ? "#facc15" : "#e5e7eb"} // yellow-400 or gray-200
+                      />
+                    ))}
+                  </div>
+                      
+                  <button
+                    onClick={() => deleteReview(review._id)}
+                    className="px-5 bg-black text-white rounded-sm py-1"
+                  >
+                    DELETE
+                  </button>
+                </div>
+
+                {/* Comment */}
+                <p className="text-gray-800">{review.comment}</p>
+           
+
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -1,8 +1,22 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import Button from "./Button";
-import {Link} from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom";
+import { Context } from "../context/store";
+import axios from "axios";
 
 function Navbar() {
+  const { loggedInUser, setLoggedInUser } = useContext(Context);
+  const handleLogOut = async () => {
+    try {
+      const res = await axios.post("/api/user/logout");
+      console.log("loggedInUser", loggedInUser);
+      if (res.status === 200) {
+        setLoggedInUser(null);
+      }
+    } catch (error) {
+      console.log("logout failed");
+    }
+  };
   return (
     <div>
       <nav className="bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700">
@@ -16,8 +30,8 @@ function Navbar() {
               className="h-8"
               alt="Flowbite Logo"
             />
-            <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
-              Flowbite
+            <span className="self-center text-2xl uppercase font-semibold whitespace-nowrap dark:text-white">
+              Airbnb
             </span>
           </a>
           <button
@@ -142,17 +156,32 @@ function Navbar() {
                 </a>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  to={"/contact"}
                   className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
                 >
                   Contact
-                </a>
+                </Link>
               </li>
-<Link to={'/create'}>
-<Button text="Creat New Listing" />
-</Link>
-              
+
+              {loggedInUser ? (
+                <>
+                  <Link to={"/create"}>
+                    <Button text="Creat New Listing" />{" "}
+                  </Link>
+                  <Button onClick={handleLogOut} text="Log Out" />{" "}
+                </>
+              ) : (
+                <div>
+                  <Link to={"/signup"}>
+                    {" "}
+                    <Button text="Sign Up" />
+                  </Link>
+                  <Link to={"/login"}>
+                    <Button text="Log In" />
+                  </Link>
+                </div>
+              )}
             </ul>
           </div>
         </div>

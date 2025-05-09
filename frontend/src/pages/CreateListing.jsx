@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Context } from "../context/store";
 
 function CreateListing() {
-  const {fetchdata} = useContext(Context)
+  const {fetchdata,loggedInUser} = useContext(Context)
     const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -11,14 +11,15 @@ function CreateListing() {
   const [location, setLocation] = useState("");
   const [country, setCountry] = useState("");
   const [imageURL,setImageURL] = useState(undefined)
+ let id = loggedInUser?._id;
 
   const handleCreateList = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("/api/create", {
+      const response = await fetch("/api/listing/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({listing : {title,description,price,location,country, image: { url: imageURL },}}),
+        body: JSON.stringify({listing : {title,description,price,location,country, id , image: { url: imageURL },}}),
       });
       if(response.ok){
         await fetchdata();
@@ -32,11 +33,11 @@ function CreateListing() {
   return (
     <div className="w-2/3 m-auto mt-8 border p-10 rounded-md">
       <form onSubmit={handleCreateList}>
-        <div class="grid gap-6 mb-6 md:grid-cols-2">
+        <div className="grid gap-6 mb-6 md:grid-cols-2">
           <div>
             <label
-              for="title"
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              htmlFor="title"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
               Title
             </label>
@@ -45,15 +46,15 @@ function CreateListing() {
               onChange={(e) => setTitle(e.target.value)}
               type="text"
               id="title"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Hotel Aura 99  ++"
               required
             />
           </div>
           <div>
             <label
-              for="description"
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              htmlFor="description"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
               Description
             </label>
@@ -62,15 +63,15 @@ function CreateListing() {
               onChange={(e) => setDescription(e.target.value)}
               type="text"
               id="description"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Detail about hotel.."
               required
             />
           </div>
           <div>
             <label
-              for="description"
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              htmlFor="description"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
               Image URL
             </label>
@@ -79,15 +80,15 @@ function CreateListing() {
               onChange={(e) => setImageURL(e.target.value)}
               type="text"
               id="description"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Enter Image URL "
          
             />
           </div>
           <div>
             <label
-              for="Price"
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              htmlFor="Price"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
               Price
             </label>
@@ -96,7 +97,7 @@ function CreateListing() {
               onChange={(e) => setPrice(e.target.value)}
               type="number"
               id="Price"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Ex - 9999"
               required
             />
@@ -104,8 +105,8 @@ function CreateListing() {
 
           <div>
             <label
-              for="location"
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              htmlFor="location"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
               Location
             </label>
@@ -114,17 +115,17 @@ function CreateListing() {
               onChange={(e) => setLocation(e.target.value)}
               type="text"
               id="location"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder=""
               required
             />
           </div>
         </div>
 
-        <div class="mb-6">
+        <div className="mb-6">
           <label
-            for="country"
-            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            htmlFor="country"
+            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
           >
             country
           </label>
@@ -133,30 +134,30 @@ function CreateListing() {
             onChange={(e) => setCountry(e.target.value)}
             type="text"
             id="country"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="•••••••••"
             required
           />
         </div>
 
-        <div class="flex items-start mb-6">
-          <div class="flex items-center h-5">
+        <div className="flex items-start mb-6">
+          <div className="flex items-center h-5">
             <input
               id="remember"
               type="checkbox"
               value=""
-              class="w-4 h-4 border border-gray-300 rounded-sm bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800"
+              className="w-4 h-4 border border-gray-300 rounded-sm bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800"
               required
             />
           </div>
           <label
-            for="remember"
-            class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+            htmlFor="remember"
+            className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
           >
             I agree with the{" "}
             <a
               href="#"
-              class="text-blue-600 hover:underline dark:text-blue-500"
+              className="text-blue-600 hover:underline dark:text-blue-500"
             >
               terms and conditions
             </a>
@@ -165,7 +166,7 @@ function CreateListing() {
         </div>
         <button
           type="submit"
-          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
           Submit
         </button>

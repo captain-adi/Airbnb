@@ -1,58 +1,50 @@
 import { connectDB } from "./src/db/index.js";
 import express from "express";
-import { Listeing } from "./src/models/listing.model.js";
+import { ErrorHandler } from "./src/utils/ErrorHandler.js";
+import listingRouter from "./src/routes/listing_route.js"
+import reviewRouter from "./src/routes/review_route.js"
+import userRouter from "./src/routes/user_route.js"
 const app = express();
 const PORT = 8080;
+import cookieParser from "cookie-parser";
+import { Listeing } from "./src/models/listing.model.js";
+import { data } from "./src/data/data.js";
 
-app.use(express.urlencoded({extended : true}));
+app.use(cookieParser()) 
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 connectDB();
+app.get("", (req, res) => {
+  res.send("working properly");
+});
 
 app.listen(PORT, () => {
   console.log(`app is listeing at port ${PORT}`);
 });
 
-app.get("/api/listing", async (req, res) => {
-  const data = await Listeing.find();
-  res.send(data);
+
+app.get("/setdata",async(req,res)=>{
+  const setdata = await Listeing.insertMany(data)
+  res.send("data set")
+})
+
+app.use('/api/listing',listingRouter)
+app.use("/api/listing/:id/review",reviewRouter)
+app.use('/api/user',userRouter)
+
+
+
+app.all("*", (req, res, next) => {
+  next(new ErrorHandler(400, "page is not for u buddy"));
+})
+
+
+app.use((err, req, res, next) => {
+  let { statusCode = 500, message } = err;
+  if (err.name === "ValidationError") {
+    const errors = Object.values(err.errors).map((e) => e.message);
+    return res.status(400).json({ message: errors.join(", ") });
+  }
+  res.status(statusCode).send(message);
 });
-
-// create route
-app.post("/api/create", async (req, res) => {
-
-    const listings = req.body.listing;
-    console.log(listings);
-    const newListings = await Listeing.create(listings);
-    res.send("success full created");
-    
-
- 
-});
-
-
-// update Route
-app.put("/api/listing/update/:id", async (req, res) => {
-  const { id } = req.params;
-  const { listing } = req.body;
-  console.log(listing);
-  const hotel = await Listeing.findByIdAndUpdate(
-    id,
-    { $set: listing },
-    { new: true }
-  );
-  console.log("updated hotel info : ", hotel);
-  res.send("updated hotel details");
-});
-
-// delete route
-app.delete("/api/listing/delete/:id", async (req, res) => {
-  const { id } = req.params;
-  console.log("worknging")
-  const hotel = await Listeing.findByIdAndDelete(id, { new: true });
-  console.log(hotel);
-  res.send("deleted hotel")
-});
-
-
-
