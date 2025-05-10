@@ -10,7 +10,7 @@ export const ContextProvider = ({ children }) => {
   const [loggedInUser, setLoggedInUser] = useState(undefined);
   const [allData, setAllData] = useState([]);
   const fetchdata = async () => {
-    const response = await fetch("/api/listing");
+    const response = await fetch(`${import.meta.env.BACKEND_URL}/api/listing`);
     const data = await response.json();
     console.log(data)
     setAllData(data);
