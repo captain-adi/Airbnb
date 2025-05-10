@@ -5,13 +5,12 @@ import { useNavigate } from "react-router-dom";
 export const Context = createContext();
 
 export const ContextProvider = ({ children }) => {
-  console.log(import.meta.env.VITE_BACKEND_URL)
   const navigate = useNavigate();
   const [loadingUser, setLoadingUser] = useState(true); 
   const [loggedInUser, setLoggedInUser] = useState(undefined);
   const [allData, setAllData] = useState([]);
   const fetchdata = async () => {
-    const response = await fetch(`${import.meta.env.BACKEND_URL}/api/listing`);
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/listing`);
     const data = await response.json();
     console.log(data)
     setAllData(data);
