@@ -8,7 +8,7 @@ import CreateListing from "./pages/CreateListing.jsx";
 import Hotel from "./pages/Hotel.jsx";
 import { Context, ContextProvider } from "./context/store.jsx";
 import Update from "./pages/Update.jsx";
-import Signup from "./pages/signup.jsx";
+import Signup from "./pages/Signup.jsx";
 import Login from "./pages/Login.jsx";
 import Contact from "./pages/Contact.jsx";
 
