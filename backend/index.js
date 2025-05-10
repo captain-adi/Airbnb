@@ -38,16 +38,16 @@ app.use('/api/listing',listingRouter)
 app.use("/api/listing/:id/review",reviewRouter)
 app.use('/api/user',userRouter)
 
-
+app.get("/health", (req, res) => {
+  res.send("Backend is healthy ✅");
+});
 
 app.all("*", (req, res, next) => {
   next(new ErrorHandler(400, "page is not found"));
 })
 
 
-app.get("/health", (req, res) => {
-  res.send("Backend is healthy ✅");
-});
+
 
 
 app.use((err, req, res, next) => {
