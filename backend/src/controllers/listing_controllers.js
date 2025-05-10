@@ -2,7 +2,7 @@ import { Listeing } from "../models/listing.model.js";
 import { wrapAsync } from "../utils/wrapAsync.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
-export const showListing = wrapAsync(async (req, res) => {
+export const  showListing = wrapAsync(async (req, res) => {
   const data = await Listeing.find()
     .populate({
       path: "reviews",
