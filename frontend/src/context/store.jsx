@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 export const Context = createContext();
 
 export const ContextProvider = ({ children }) => {
+  console.log(import.meta.env.VITE_BACKEND_URL)
   const navigate = useNavigate();
   const [loadingUser, setLoadingUser] = useState(true); 
   const [loggedInUser, setLoggedInUser] = useState(undefined);
@@ -17,7 +18,7 @@ export const ContextProvider = ({ children }) => {
   };
   const fetchUser = async () => {
     try {
-      const res = await axios.get("/api/user/me");
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/user/me`);
       setLoggedInUser(res.data.user);
     } catch (err) {
       if (err.response && err.response.status === 401) {
