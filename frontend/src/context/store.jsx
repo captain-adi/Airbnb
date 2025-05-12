@@ -15,6 +15,7 @@ export const ContextProvider = ({ children }) => {
     console.log(data)
     setAllData(data);
   };
+  
   const fetchUser = async () => {
     try {
       const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/user/me`);
