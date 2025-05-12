@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Signup() {
   const [username, setUserName] = useState("");
@@ -11,7 +11,7 @@ function Signup() {
     try {
       
       e.preventDefault();
-      const response = await axios.post("/api/user/signup", {
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/user/signup`, {
         username,
         email,
         password,
@@ -106,12 +106,12 @@ function Signup() {
           {/* <!-- Already have an account --> */}
           <p className="text-center text-sm text-gray-600 dark:text-gray-400">
             Already have an account?
-            <a
-              href="#"
+            <Link 
+              to={"/login"}
               className="text-blue-600 hover:underline dark:text-blue-400"
             >
               Login here
-            </a>
+            </Link>
           </p>
         </form>
       </div>

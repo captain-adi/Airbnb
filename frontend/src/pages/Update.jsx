@@ -6,7 +6,7 @@ import axios from "axios";
 
 
 function Update() {
-    const notify = () => toast.warn("unauthorized access!");
+    const notify = () => toast.warn("You are not LoggedIn!");
     const {fetchdata} = useContext(Context)
     const {id} = useParams();
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ function Update() {
   const handleCreateList = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`/api/listing/update/${id}`, {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/listing/update/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

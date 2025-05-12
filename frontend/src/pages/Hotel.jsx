@@ -24,7 +24,7 @@ function Hotel() {
 
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`/api/listing/delete/${id}`, {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/listing/delete/${id}`, {
         method: "DELETE",
       });
       if (response.ok) {
@@ -39,7 +39,7 @@ function Hotel() {
     }
   };
 const deleteReview = async (reviewID) => {
- const respose = await fetch(`/api/listing/${id}/review/${reviewID}`, {
+ const respose = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/listing/${id}/review/${reviewID}`, {
     method: "DELETE"
   });
   if(respose.ok){
@@ -150,7 +150,7 @@ const deleteReview = async (reviewID) => {
         action=""
         onSubmit={async (e) => {
           e.preventDefault();
-          const response = await fetch(`/api/listing/${id}/review`, {
+          const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/listing/${id}/review`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

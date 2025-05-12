@@ -16,7 +16,7 @@ function CreateListing() {
   const handleCreateList = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("/api/listing/create", {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/listing/create`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({listing : {title,description,price,location,country, id , image: { url: imageURL },}}),
