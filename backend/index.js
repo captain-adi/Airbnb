@@ -12,7 +12,7 @@ import { Listeing } from "./src/models/listing.model.js";
 import { data } from "./src/data/data.js";
 
 app.use(cors({
-  origin : "http://localhost:5173",
+  origin : "https://airbnb-ten-sage.vercel.app/",
     credentials: true 
 }));
 app.use(cookieParser());

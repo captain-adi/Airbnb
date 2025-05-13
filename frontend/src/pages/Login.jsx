@@ -11,6 +11,7 @@ const { setLoggedInUser} = useContext(Context)
   const [password, setPassword] = useState("");
   const handleLogin = async (e) => {
     e.preventDefault();
+    console.log("workign")
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/user/login`,
@@ -23,6 +24,8 @@ const { setLoggedInUser} = useContext(Context)
         }
       );
       if (response.status === 200) {
+        console.log("login successful")
+        console.log(setLoggedInUser)
         setLoggedInUser(1);
         navigate("/")
       }

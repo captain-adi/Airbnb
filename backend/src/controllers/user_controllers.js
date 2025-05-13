@@ -44,7 +44,7 @@ export const login = wrapAsync(async (req, res) => {
       );
     }
   };
-  console.log("cookes : ", req.cookies);
+
   let { email, password } = req.body;
   if (!email || !password) {
     throw new ErrorHandler(400, "email and password is required");
@@ -65,8 +65,9 @@ export const login = wrapAsync(async (req, res) => {
   );
 
   const option = {
-    secure: true,
-    httpOnly: true,
+   httpOnly: true,
+  secure: true,           // ✅ required for SameSite: 'None'
+  sameSite: 'None',       // ✅ required for cross-origin
   };
 
   return res
