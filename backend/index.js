@@ -11,10 +11,12 @@ import cookieParser from "cookie-parser";
 import { Listeing } from "./src/models/listing.model.js";
 import { data } from "./src/data/data.js";
 
-app.use(cors({
-  origin : "https://airbnb-ten-sage.vercel.app/",
-    credentials: true 
-}));
+app.use(
+  cors({
+    origin: "https://airbnb-ten-sage.vercel.app",
+    credentials: true,
+  })
+);
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
