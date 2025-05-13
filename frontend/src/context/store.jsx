@@ -34,7 +34,7 @@ export const ContextProvider = ({ children }) => {
   useEffect(() => {
     fetchdata();
     fetchUser();
-  }, []);
+  }, [loggedInUser]);
 
   return (
     <Context.Provider
