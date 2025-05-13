@@ -6,17 +6,21 @@ import axios from "axios";
 
 function Navbar() {
   const { loggedInUser, setLoggedInUser } = useContext(Context);
-  const handleLogOut = async () => {
-    try {
-      const res = await axios.post("/api/user/logout");
-      console.log("loggedInUser", loggedInUser);
-      if (res.status === 200) {
-        setLoggedInUser(null);
-      }
-    } catch (error) {
-      console.log("logout failed");
+ const handleLogOut = async () => {
+  try {
+    const res = await axios.post(
+      "/api/user/logout",
+      {},
+      { withCredentials: true } // <-- Add this
+    );
+    if (res.status === 200) {
+      setLoggedInUser(null);
     }
-  };
+  } catch (error) {
+    console.log("logout failed", error);
+  }
+};
+
   return (
     <div>
       <nav className="bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700">
