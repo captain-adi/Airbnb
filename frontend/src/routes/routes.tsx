@@ -13,7 +13,7 @@ export const routes = createBrowserRouter([
                 element : <Dashboard/>
             },
             {
-                path : '/detail',
+                path : '/rooms/:id',
                 element : <DetailDashboard/>
             }
         ]

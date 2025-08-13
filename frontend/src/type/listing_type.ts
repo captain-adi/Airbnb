@@ -1,5 +1,5 @@
 export interface IListingData {
-    id: string;
+    _id: string;
     title: string;
     description: string;
     price: number;

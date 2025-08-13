@@ -1,13 +1,14 @@
 import apiEndpoints from "@/api/apiendpoints"
 import type { IListingData } from "@/type/listing_type";
 import { useEffect, useState } from "react"
+import { Link } from "react-router-dom";
 
 
 function Dashboard() {
   const [listings,setListings]= useState<IListingData[]>([]);
 console.log(listings)
   useEffect(()=>{
-    apiEndpoints.getData('/testing').then((data)=>setListings(data)).catch((error)=>console.error(error));
+    apiEndpoints.getAllData('/listings').then((data)=>setListings(data)).catch((error)=>console.error(error));
   },[])
   
   return (
@@ -16,12 +17,13 @@ console.log(listings)
 
   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
     {listings.map((listing) => (
-      <div
-        key={listing.id}
-        className="bg-white shadow-md rounded-xl overflow-hidden border border-gray-200 hover:shadow-lg transition duration-300"
-      >
-        {/* Image */}
-        <div className="overflow-hidden">
+      <Link to={`/rooms/${listing._id}`}>
+        <div
+          key={listing._id}
+          className="bg-white shadow-md rounded-xl overflow-hidden border border-gray-200 hover:shadow-lg transition duration-300"
+        >
+          {/* Image */}
+          <div className="overflow-hidden">
           <img
             src={listing.image}
             alt={listing.title}
@@ -42,11 +44,12 @@ console.log(listings)
           </p>
         </div>
       </div>
+         </Link>
     ))}
   </div>
 </div>
 
-  )
+  ) 
 }
 
 export default Dashboard

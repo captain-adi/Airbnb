@@ -13,8 +13,12 @@ class API_ENDPOINTS  {
         return response.data;
     }
 
-    public async getData(endpoint: string) {
+    public async getAllData(endpoint: string) {
         const url = this.createURL(endpoint);
+        return this.fetchData(url);
+    }
+    public async getDataById(endpoint: string, id: string) {
+        const url = `${this.createURL(endpoint)}/${id}`;
         return this.fetchData(url);
     }
 }
