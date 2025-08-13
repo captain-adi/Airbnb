@@ -27,6 +27,11 @@ res.send("working fine")
 })
 
 
+app.get('/api/testing',async (req,res)=>{
+  const listings = await Listing.find({});
+  res.json(listings)
+})
+
 app.listen(process.env.PORT || 3000, () => {
   console.log(`Server is running on port ${process.env.PORT || 3000}`);
 });
