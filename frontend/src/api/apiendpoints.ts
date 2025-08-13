@@ -2,7 +2,7 @@ import Api_confige from "./apiconfige";
 import axios from "axios";
 class API_ENDPOINTS  {
     private createURL(endpoint: string){
-        return `${Api_confige.API_BASE_URL}/${endpoint}`;
+        return `${Api_confige.API_BASE_URL}${endpoint}`;
     }
 
     private async fetchData(url: string) {
