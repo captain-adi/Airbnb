@@ -16,7 +16,7 @@ const listingSchema = new mongoose.Schema({
     },
     image : {
         type : String,
-        set : (v)=> v==='' ? "https://unsplash.com/photos/white-bed-linen-with-throw-pillows-Yrxr3bsPdS0" : v  
+        set : (v)=> v==='' ? "https://images.unsplash.com/photo-1600585154340-be6161a56a0c" : v  
     },
     country : {
         type : String,
