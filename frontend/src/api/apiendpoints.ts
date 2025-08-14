@@ -1,3 +1,4 @@
+import type { IListingData } from "@/type/listing_type";
 import Api_confige from "./apiconfige";
 import axios from "axios";
 class API_ENDPOINTS  {
@@ -13,11 +14,11 @@ class API_ENDPOINTS  {
         return response.data;
     }
 
-    public async getAllData(endpoint: string) {
+    public async getAllData(endpoint: string) : Promise<IListingData[]> {
         const url = this.createURL(endpoint);
         return this.fetchData(url);
     }
-    public async getDataById(endpoint: string, id: string) {
+    public async getDataById(endpoint: string, id: string) : Promise<IListingData> {
         const url = `${this.createURL(endpoint)}/${id}`;
         return this.fetchData(url);
     }

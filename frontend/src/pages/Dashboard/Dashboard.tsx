@@ -1,25 +1,22 @@
-import apiEndpoints from "@/api/apiendpoints"
+import { useGetAllData } from "@/hooks/query";
 import type { IListingData } from "@/type/listing_type";
-import { useEffect, useState } from "react"
 import { Link } from "react-router-dom";
 
 
 function Dashboard() {
-  const [listings,setListings]= useState<IListingData[]>([]);
-console.log(listings)
-  useEffect(()=>{
-    apiEndpoints.getAllData('/listings').then((data)=>setListings(data)).catch((error)=>console.error(error));
-  },[])
-  
+const { data ,  isLoading, error } = useGetAllData('/listings'); 
+if (isLoading) return <div>Loading...</div>
+if (error) return <div>Error loading data</div>
+
   return (
     <div className="p-8 bg-gray-50 min-h-screen">
   <h1 className="text-3xl font-bold text-gray-800 mb-8">Dashboard</h1>
 
   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-    {listings.map((listing) => (
-      <Link to={`/rooms/${listing._id}`}>
+    {data?.map((listing  : IListingData) => (
+      <Link to={`/rooms/${listing._id}`}    key={listing._id}>
         <div
-          key={listing._id}
+       
           className="bg-white shadow-md rounded-xl overflow-hidden border border-gray-200 hover:shadow-lg transition duration-300"
         >
           {/* Image */}
