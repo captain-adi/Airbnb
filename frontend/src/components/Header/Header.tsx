@@ -1,3 +1,4 @@
+import NewListing from "../NewListing/NewListing"
 
 
 function Header() {
@@ -18,28 +19,10 @@ function Header() {
         </div>
 
         {/* Search Bar */}
-        <div className="flex items-center border rounded-full shadow-sm px-3 py-1">
-          <input
-            type="text"
-            placeholder="Anywhere"
-            className="outline-none px-2 text-sm"
-          />
-          <span className="mx-1">|</span>
-          <input
-            type="text"
-            placeholder="Any week"
-            className="outline-none px-2 text-sm"
-          />
-          <span className="mx-1">|</span>
-          <input
-            type="text"
-            placeholder="Add guests"
-            className="outline-none px-2 text-sm"
-          />
-          <button className="bg-rose-500 text-white rounded-full p-2 ml-2">
-            🔍
-          </button>
-        </div>
+      <div>
+        
+      <NewListing/>
+      </div>
 
         {/* Right Menu */}
         <div className="flex items-center gap-4">

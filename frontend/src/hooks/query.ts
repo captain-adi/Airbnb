@@ -1,5 +1,6 @@
 import apiEndpoints from '@/api/apiendpoints'
-import {  useQuery } from '@tanstack/react-query'
+import type { IListingData } from '@/type/listing_type';
+import {  useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 export function useGetAllData(endpoint : string) {
 return useQuery({
@@ -19,3 +20,26 @@ export function useGetDataById(endpoint : string, id : string) {
         }
     })
 }
+
+
+export function useCreateData( ) {
+    return useMutation({
+        mutationKey: ['createData'],
+        mutationFn: (data : IListingData) => apiEndpoints.createData('/listings', data),
+    })
+}
+
+
+export function useDeleteData() {
+
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationKey: ['deleteData'],
+        mutationFn: (id:string) => apiEndpoints.deleteData(id),
+            onSuccess: (_, id) => {
+      // Invalidate listing caches so data refreshes
+      queryClient.invalidateQueries({ queryKey: ["/listings"] });
+      queryClient.invalidateQueries({ queryKey: ["/listing", id] });
+    },
+    })
+} 
