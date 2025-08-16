@@ -19,33 +19,34 @@ function DetailDashboard() {
   if (error) return <div>Error loading data</div>;
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
+    <div className="min-h-screen  flex items-center justify-center p-6">
       <div className="w-full max-w-4xl">
-        <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">
+        <h1 className="text-3xl font-bold mb-6 text-center ">
           Detail Dashboard
         </h1>
 
         {data ? (
-          <div className="bg-white shadow-lg rounded-lg overflow-hidden">
+          <div className="dark:bg-gray-900 shadow-lg rounded-lg overflow-hidden">
             <img
               src={data.image}
               alt={data.title}
               className="w-full h-full object-cover"
             />
             <div className="p-6">
-              <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+              <h2 className="text-2xl font-semibold mb-2">
                 {data.title}
               </h2>
-              <p className="text-gray-600 mb-4">{data.description}</p>
+              <p className="text-muted-foreground mb-4">{data.description}</p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <p className="text-lg font-medium text-gray-800">
+                <p className="text-lg font-medium ">
                   💰 Price:{" "}
                   <span className="text-green-600">${data.price}</span>
                 </p>
                 <p className="text-lg font-medium  flex justify-between">
                   <span className="text-blue-600">
-                    <span className="text-gray-800">📍 Location: </span>
+                    <span className="text-black dark:text-white
+                    ">📍 Location: </span>
                     {data.location}, {data.country}
                   </span>
                 </p>

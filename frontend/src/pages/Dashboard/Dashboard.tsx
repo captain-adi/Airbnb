@@ -9,15 +9,15 @@ if (isLoading) return <div>Loading...</div>
 if (error) return <div>Error loading data</div>
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen">
-  <h1 className="text-3xl font-bold text-gray-800 mb-8">Dashboard</h1>
+    <div className="p-8  min-h-screen">
+  <h1 className="text-3xl font-bold  mb-8">Dashboard</h1>
 
   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
     {data?.map((listing  : IListingData) => (
       <Link to={`/rooms/${listing._id}`}    key={listing._id}>
         <div
        
-          className="bg-white shadow-md rounded-xl overflow-hidden border border-gray-200 hover:shadow-lg transition duration-300"
+          className="dark:bg-gray-900 shadow-md rounded-xl overflow-hidden border border-gray-200 hover:shadow-lg transition duration-300"
         >
           {/* Image */}
           <div className="overflow-hidden">
@@ -30,13 +30,13 @@ if (error) return <div>Error loading data</div>
 
         {/* Content */}
         <div className="p-4">
-          <h2 className="text-xl font-semibold text-gray-900">{listing.title}</h2>
+          <h2 className="text-xl font-semibold">{listing.title}</h2>
           <p className="text-muted-foreground mt-2">{listing.description}</p>
 
           <p className="mt-3 text-lg font-bold text-indigo-600">
             ${listing.price}
           </p>
-          <p className="text-gray-500 text-sm">
+          <p className="text-muted-foreground text-sm">
             {listing.location}, {listing.country}
           </p>
         </div>

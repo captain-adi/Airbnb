@@ -2,8 +2,8 @@
 
 function Footer() {
   return (
-     <footer className="bg-gray-100 border-t mt-10">
-      <div className="max-w-7xl mx-auto px-4 py-6 grid grid-cols-1 md:grid-cols-4 gap-8 text-sm text-gray-700">
+     <footer className=" border-t mt-10 dark:bg-gray-700">
+      <div className="max-w-7xl mx-auto px-4 py-6 grid grid-cols-1 md:grid-cols-4 gap-8 text-sm text-muted-foreground">
         
         {/* Column 1 */}
         <div>
@@ -52,7 +52,7 @@ function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t bg-gray-100">
+      <div className="border-t dark:bg-gray-700 ">
         <div className="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500">
           <p>© 2025 Airbnb, Inc. · Privacy · Terms · Sitemap</p>
           <div className="flex items-center gap-4 mt-2 md:mt-0">

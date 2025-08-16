@@ -1,9 +1,15 @@
+import { useTheme } from "@/theme/themeProvider"
 import NewListing from "../NewListing/NewListing"
+import { Button } from "../ui/button"
+import { Moon, Sun } from "lucide-react"
 
 
 function Header() {
+ const { theme, setTheme } = useTheme()
+
+
   return (
-     <header className="bg-white shadow-sm sticky top-0 z-50">
+     <header className="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-50">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
         {/* Logo */}
         <div className="flex items-center gap-2">
@@ -26,6 +32,10 @@ function Header() {
 
         {/* Right Menu */}
         <div className="flex items-center gap-4">
+          {
+            theme === "dark" ? ( <Sun className="cursor-pointer text-yellow-300" onClick={() => setTheme("light")} /> ) : ( <Moon className="cursor-pointer" onClick={() => setTheme("dark")} /> )
+          }
+          
           <button className="text-sm font-medium">Airbnb your home</button>
           <button>🌐</button>
           <div className="border rounded-full px-3 py-1 flex items-center gap-2">
