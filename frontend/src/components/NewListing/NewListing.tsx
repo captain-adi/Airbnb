@@ -15,7 +15,12 @@ import { useCreateData } from "@/hooks/query";
 import { useQueryClient } from "@tanstack/react-query";
 
 function NewListing() {
-  const { register, handleSubmit, reset } = useForm<IListingData>();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<IListingData>();
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -25,7 +30,9 @@ function NewListing() {
   const onSubmit = (data: IListingData) => {
     mutate(data, {
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['getAllData', '/listings'] });
+        queryClient.invalidateQueries({
+          queryKey: ["getAllData", "/listings"],
+        });
         reset();
         setOpen(false);
         navigate("/");
@@ -51,45 +58,89 @@ function NewListing() {
             className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md space-y-5"
           >
             <input
-              {...register("title")}
+              {...register("title", { required: "Title is required" })}
               type="text"
               placeholder="Listing Title"
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className={`w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none transition ${
+                errors.title
+                  ? "border-red-500 focus:ring-2 focus:ring-red-400"
+                  : "border-gray-300 focus:ring-2 focus:ring-green-400"
+              }`}
             />
+            {errors.title && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.title.message}
+              </p>
+            )}
 
             <textarea
-              {...register("description")}
+              {...register("description", {
+                required: "Description is required",
+              })}
               cols={30}
               placeholder="Listing Description"
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className={`w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none transition ${
+                errors.description
+                  ? "border-red-500 focus:ring-2 focus:ring-red-400"
+                  : "border-gray-300 focus:ring-2 focus:ring-green-400"
+              }`}
             />
-
+            {errors.description && (
+              <p className="text-red-500 text-sm">
+                {errors.description.message}
+              </p>
+            )}
             <input
-              {...register("price", { valueAsNumber: true })}
+              {...register("price", {
+                valueAsNumber: true,
+                required: "Price is required",
+              })}
               type="number"
               placeholder="Listing Price"
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className={`w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none transition ${
+                errors.price
+                  ? "border-red-500 focus:ring-2 focus:ring-red-400"
+                  : "border-gray-300 focus:ring-2 focus:ring-green-400"
+              }`}
             />
-
+            {errors.price && (
+              <p className="text-red-500 text-sm">{errors.price.message}</p>
+            )}
             <input
-              {...register("location")}
+              {...register("location", { required: "Location is required" })}
               type="text"
               placeholder="Listing Location"
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className={`w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none transition ${
+                errors.location
+                  ? "border-red-500 focus:ring-2 focus:ring-red-400"
+                  : "border-gray-300 focus:ring-2 focus:ring-green-400"
+              }`}
             />
+            {errors.location && (
+              <p className="text-red-500 text-sm">{errors.location.message}</p>
+            )}
             <input
               {...register("image")}
               type="text"
               placeholder="Listing Image URL"
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
-            <input
-              {...register("country")}
-              type="text"
-              placeholder="Listing Country"
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className={`w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none transition ${
+                errors.image
+                  ? "border-red-500 focus:ring-2 focus:ring-red-400"
+                  : "border-gray-300 focus:ring-2 focus:ring-green-400"
+              }`}
             />
 
+            <input
+              {...register("country", { required: "country is required" })}
+              type="text"
+              placeholder="Listing Country"
+              className={`w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none transition ${
+                errors.country
+                  ? "border-red-500 focus:ring-2 focus:ring-red-400"
+                  : "border-gray-300 focus:ring-2 focus:ring-green-400"
+              }`}
+            />
+            
             <button
               type="submit"
               className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-lg transition duration-200"
