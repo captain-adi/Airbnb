@@ -43,3 +43,11 @@ export function useDeleteData() {
     },
     })
 } 
+
+
+export function useUpdateData(){
+    return useMutation({
+        mutationKey: ['updateData'],
+        mutationFn: ({ id, data }: { id: string; data: IListingData }) => apiEndpoints.updateData(id, data),
+    })
+}

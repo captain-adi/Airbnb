@@ -33,6 +33,12 @@ class API_ENDPOINTS  {
             return response;
         }
 
+    public async updateData(id: string, data: IListingData) : Promise<IListingData> {
+        const url = this.createURL(`/listings/${id}`);
+        const response = await axios.patch(url, data);
+        return response.data;
+    }
+
 }
 
 const apiEndpoints = new API_ENDPOINTS();

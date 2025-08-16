@@ -41,6 +41,13 @@ app.delete("/api/listings/:id", async (req, res) => {
   res.send("Listing deleted successfully");
 })
 
+app.patch('/api/listings/:id', async (req, res) => {
+const { id } = req.params;
+const updatedData = req.body;
+const updatedListing = await Listing.findByIdAndUpdate(id, updatedData, { new: true });
+res.json(updatedListing);
+})
+
 
 app.listen(process.env.PORT || 3000, () => {
   console.log(`Server is running on port ${process.env.PORT || 3000}`);

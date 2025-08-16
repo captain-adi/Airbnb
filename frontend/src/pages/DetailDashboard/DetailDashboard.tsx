@@ -1,5 +1,6 @@
 import apiEndpoints from "@/api/apiendpoints";
 import { Button } from "@/components/ui/button";
+import UpdateListing from "@/components/UpdateListing/UpdateListing";
 import { useGetDataById } from "@/hooks/query";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -7,13 +8,13 @@ function DetailDashboard() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { data, isLoading, error } = useGetDataById("/listings", id);
-      const handleDelete = async () => {
-        apiEndpoints.deleteData(id).then((response) => {
-          if (response.status === 200) {
-            navigate("/");
-          }
-        });
+  const handleDelete = async () => {
+    apiEndpoints.deleteData(id).then((response) => {
+      if (response.status === 200) {
+        navigate("/");
       }
+    });
+  };
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading data</div>;
 
@@ -47,8 +48,16 @@ function DetailDashboard() {
                     <span className="text-gray-800">📍 Location: </span>
                     {data.location}, {data.country}
                   </span>
-                  <Button onClick={handleDelete} className="bg-red-600 text-white">Delete</Button>
                 </p>
+              </div>
+              <div className="flex gap-4 mt-6">
+                <UpdateListing data={data} />
+                <Button
+                  onClick={handleDelete}
+                  className="bg-red-600 text-white"
+                >
+                  Delete
+                </Button>
               </div>
             </div>
           </div>
