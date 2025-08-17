@@ -13,6 +13,7 @@ import { useNavigate } from "react-router";
 import { useState } from "react";
 import { useCreateData } from "@/hooks/query";
 import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 function NewListing() {
   const {
@@ -37,15 +38,23 @@ function NewListing() {
         setOpen(false);
         navigate("/");
       },
+      onError: (error: any) => {
+        if (error.isAxiosError) {
+           console.log(error.response.data.message);
+          toast(error.response.data.message);
+        }
+      },
     });
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button>Create Listing</Button>
-      </DialogTrigger>
-      <DialogContent>
+    <>
+
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger asChild>
+          <Button>Create Listing</Button>
+        </DialogTrigger>
+        <DialogContent>
         <DialogHeader>
           <DialogTitle className="text-center">Create New Listing</DialogTitle>
         </DialogHeader>
@@ -55,7 +64,7 @@ function NewListing() {
         <div className="flex justify-center items-center">
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md space-y-5"
+            className=" p-8 rounded-xl shadow-lg w-full max-w-md space-y-5"
           >
             <input
               {...register("title", { required: "Title is required" })}
@@ -74,9 +83,7 @@ function NewListing() {
             )}
 
             <textarea
-              {...register("description", {
-                required: "Description is required",
-              })}
+              {...register("description", {required : "Description is required"})}
               cols={30}
               placeholder="Listing Description"
               className={`w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none transition ${
@@ -85,11 +92,6 @@ function NewListing() {
                   : "border-gray-300 focus:ring-2 focus:ring-green-400"
               }`}
             />
-            {errors.description && (
-              <p className="text-red-500 text-sm">
-                {errors.description.message}
-              </p>
-            )}
             <input
               {...register("price", {
                 valueAsNumber: true,
@@ -151,6 +153,7 @@ function NewListing() {
         </div>
       </DialogContent>
     </Dialog>
+    </>
   );
 }
 

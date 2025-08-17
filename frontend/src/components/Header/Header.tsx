@@ -1,6 +1,5 @@
 import { useTheme } from "@/theme/themeProvider"
 import NewListing from "../NewListing/NewListing"
-import { Button } from "../ui/button"
 import { Moon, Sun } from "lucide-react"
 
 
