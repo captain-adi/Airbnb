@@ -43,7 +43,7 @@ app.delete("/api/listings/:id", asyncHandler(async (req, res) => {
 }))
 
 //update listing
-app.patch('/api/listings/:id',asyncHandler(  async (req, res) => {
+app.patch('/api/listings/:id', schemaValidator,asyncHandler(  async (req, res) => {
 const { id } = req.params;
 const updatedData = req.body;
 if (!updatedData.title || !updatedData.description || !updatedData.price ||
