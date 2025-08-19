@@ -12,6 +12,7 @@ import { useForm } from "react-hook-form";
 import type { IListingData } from "@/type/listing_type";
 import { useUpdateData } from "@/hooks/query";
 import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 
 interface IUpdateListingProps {
@@ -37,6 +38,11 @@ function UpdateListing({ data }: IUpdateListingProps) {
         queryClient.invalidateQueries({ queryKey: ["getDataById", "/listings"] });
         setOpen(false);
       },
+      onError : (error : any )=>{
+        if(error.isAxiosError) {  
+          toast(error.response.data.message)
+        }
+      }
     });
   }
 
@@ -53,7 +59,7 @@ function UpdateListing({ data }: IUpdateListingProps) {
           Fill in the details below to create a new listing.
         </DialogDescription>
         <div className="flex justify-center items-center">
-          <form className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md space-y-5" onSubmit={handleSubmit(onSubmit)}>
+          <form className=" p-8 rounded-xl shadow-lg w-full max-w-md space-y-5" onSubmit={handleSubmit(onSubmit)}>
             <input
               {...register("title", { required: "Title is required" })}
               type="text"
