@@ -1,4 +1,5 @@
 import apiEndpoints from "@/api/apiendpoints";
+import Review from "@/components/Review/Review";
 import { Button } from "@/components/ui/button";
 import UpdateListing from "@/components/UpdateListing/UpdateListing";
 import { useGetDataById } from "@/hooks/query";
@@ -19,7 +20,7 @@ function DetailDashboard() {
   if (error) return <div>Error loading data</div>;
 
   return (
-    <div className="min-h-screen  flex items-center justify-center p-6">
+    <div className="min-h-screen  flex flex-col items-center  p-6">
       <div className="w-full max-w-4xl">
         <h1 className="text-3xl font-bold mb-6 text-center ">
           Detail Dashboard
@@ -68,6 +69,7 @@ function DetailDashboard() {
           </div>
         )}
       </div>
+      <Review id={id} />
     </div>
   );
 }

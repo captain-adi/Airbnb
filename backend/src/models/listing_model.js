@@ -25,7 +25,13 @@ const listingSchema = new mongoose.Schema({
     location : {
         type : String,
         required : true
-    }
+    }, 
+     reviews : [
+        {
+         type : mongoose.Schema.Types.ObjectId,
+         ref : "Review"
+        }
+     ]
 },{timestamps : true});
 
 

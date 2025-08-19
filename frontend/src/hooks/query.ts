@@ -51,3 +51,10 @@ export function useUpdateData(){
         mutationFn: ({ id, data }: { id: string; data: IListingData }) => apiEndpoints.updateData(id, data),
     })
 }
+
+export function useCreateReview() {
+    return useMutation({
+        mutationKey: ['createReview'],
+        mutationFn: ({ id, data }: { id: string; data: { rating: number; comment: string } }) => apiEndpoints.createReview(id, data),
+    })
+}

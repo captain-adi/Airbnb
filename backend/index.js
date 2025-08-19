@@ -5,7 +5,8 @@ import cors from "cors";
 import { Listing } from "./src/models/listing_model.js";
 import asyncHandler from "./src/utils/asyncHandler.js";
 import ErrorHandler from "./src/utils/ErrorHandler.js";
-import schemaValidator from "./src/middlewares/schemaValidator.js";
+import {validateListing, validateReview} from "./src/middlewares/schemaValidator.js";
+import { Review } from "./src/models/review_model.js";
 dotenv.config();
 
 const app = express();
@@ -28,7 +29,7 @@ app.get('/api/listings/:id',asyncHandler(async (req,res)=>{
   res.json(listings)
 }))
 // create new listing
-app.post('/api/listings',schemaValidator, asyncHandler(async (req, res) => {
+app.post('/api/listings', validateListing, asyncHandler(async (req, res) => {
   const data = req.body;
   const newListing = await Listing.create(data);
   res.send("new listing created");
@@ -40,10 +41,10 @@ app.delete("/api/listings/:id", asyncHandler(async (req, res) => {
   const { id } = req.params; 
   const deletedListing = await Listing.findByIdAndDelete(id);
   res.send("Listing deleted successfully");
-}))
+}));
 
 //update listing
-app.patch('/api/listings/:id', schemaValidator,asyncHandler(  async (req, res) => {
+app.patch('/api/listings/:id', validateListing ,asyncHandler(  async (req, res) => {
 const { id } = req.params;
 const updatedData = req.body;
 if (!updatedData.title || !updatedData.description || !updatedData.price ||
@@ -52,6 +53,16 @@ if (!updatedData.title || !updatedData.description || !updatedData.price ||
   }
 const updatedListing = await Listing.findByIdAndUpdate(id, updatedData, { new: true });
 res.json(updatedListing);
+}));
+
+// review routes
+app.post('/api/listings/:id/reviews', validateReview, asyncHandler(async (req, res) => {
+  const { rating, comment } = req.body;
+  const listing = await Listing.findById(req.params.id);
+  const newReview = await Review.create({rating,comment});
+  listing.reviews.push(newReview._id);
+  await listing.save(); 
+  console.log("New review created:", newReview);
 }));
 
 // Error handling middleware

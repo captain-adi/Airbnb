@@ -39,6 +39,13 @@ class API_ENDPOINTS  {
         return response.data;
     }
 
+
+    public async createReview(id: string, data: { rating: number; comment: string }) {
+        const url = this.createURL(`/listings/${id}/reviews`);
+        const response = await axios.post(url, data);
+        return response.data;
+    }
+
 }
 
 const apiEndpoints = new API_ENDPOINTS();

@@ -9,4 +9,9 @@ const listingSchema =Joi.object({
     image : Joi.string().allow(null, '')
 })
 
-export default listingSchema;
+const reviewSchema = Joi.object({
+    comment: Joi.string().min(2).max(500).required(),
+    rating: Joi.number().min(1).max(5).required()
+})
+
+export { listingSchema, reviewSchema };
