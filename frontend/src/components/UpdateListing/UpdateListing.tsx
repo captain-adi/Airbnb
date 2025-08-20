@@ -38,10 +38,12 @@ function UpdateListing({ data }: IUpdateListingProps) {
         queryClient.invalidateQueries({ queryKey: ["getDataById", "/listings"] });
         setOpen(false);
       },
-      onError : (error : any )=>{
-        if(error.isAxiosError) {  
-          toast(error.response.data.message)
-        }
+      onError: (error: any) => {
+        toast(
+          error?.response?.data?.message ||
+          error?.message ||
+          "Something went wrong. Please try again."
+        );
       }
     });
   }

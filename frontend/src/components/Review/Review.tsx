@@ -27,7 +27,11 @@ function Review({ id }: IReview) {
           console.log("Review submitted successfully:", response);
         },
         onError: (error: any) => {
-          toast(error.response?.data?.message || "Failed to submit review");
+          toast(
+            error?.response?.data?.message ||
+            error?.message ||
+            "Something went wrong. Please try again."
+          );
         }
       }
     );

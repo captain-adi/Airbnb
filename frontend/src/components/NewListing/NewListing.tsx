@@ -39,10 +39,11 @@ function NewListing() {
         navigate("/");
       },
       onError: (error: any) => {
-        if (error.isAxiosError) {
-           console.log(error.response.data.message);
-          toast(error.response.data.message);
-        }
+        toast(
+          error?.response?.data?.message ||
+            error?.message ||
+            "Something went wrong. Please try again."
+        );
       },
     });
   };
