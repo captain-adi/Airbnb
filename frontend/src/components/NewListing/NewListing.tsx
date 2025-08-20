@@ -37,6 +37,7 @@ function NewListing() {
         reset();
         setOpen(false);
         navigate("/");
+        toast("Listing created successfully");
       },
       onError: (error: any) => {
         toast(

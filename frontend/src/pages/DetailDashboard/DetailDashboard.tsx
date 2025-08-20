@@ -3,6 +3,7 @@ import Review from "@/components/Review/Review";
 import { Button } from "@/components/ui/button";
 import UpdateListing from "@/components/UpdateListing/UpdateListing";
 import { useGetDataById } from "@/hooks/query";
+import DetailDashboardSkeleton from "@/skeletons/DetailDashboardSkeleton";
 import { useNavigate, useParams } from "react-router-dom";
 
 function DetailDashboard() {
@@ -16,7 +17,7 @@ function DetailDashboard() {
       }
     });
   };
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <DetailDashboardSkeleton />;
   if (error) return <div>Error loading data</div>;
 
   return (

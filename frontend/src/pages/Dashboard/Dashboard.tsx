@@ -1,11 +1,12 @@
 import { useGetAllData } from "@/hooks/query";
+import DashboardSkeleton from "@/skeletons/DashboardSkeleton";
 import type { IListingData } from "@/type/listing_type";
 import { Link } from "react-router-dom";
 
 
 function Dashboard() {
 const { data ,  isLoading, error } = useGetAllData('/listings'); 
-if (isLoading) return <div>Loading...</div>
+if (isLoading) return <DashboardSkeleton/>
 if (error) return <div>Error loading data</div>
 
   return (
@@ -17,7 +18,7 @@ if (error) return <div>Error loading data</div>
       <Link to={`/rooms/${listing._id}`}    key={listing._id}>
         <div
        
-          className="dark:bg-gray-900 shadow-md rounded-xl overflow-hidden border border-gray-200 hover:shadow-lg transition duration-300"
+          className="dark:bg-gray-900 shadow-md rounded-xl overflow-hidden border  hover:shadow-lg transition duration-300"
         >
           {/* Image */}
           <div className="overflow-hidden">

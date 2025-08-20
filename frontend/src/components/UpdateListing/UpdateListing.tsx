@@ -37,6 +37,7 @@ function UpdateListing({ data }: IUpdateListingProps) {
         // Invalidate and refetch
         queryClient.invalidateQueries({ queryKey: ["getDataById", "/listings"] });
         setOpen(false);
+        toast("Listing updated successfully");
       },
       onError: (error: any) => {
         toast(
