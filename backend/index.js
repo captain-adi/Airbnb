@@ -61,7 +61,8 @@ app.post('/api/listings/:id/reviews', validateReview, asyncHandler(async (req, r
   const listing = await Listing.findById(req.params.id);
   const newReview = await Review.create({rating,comment});
   listing.reviews.push(newReview._id);
-  await listing.save(); 
+  await listing.save();
+  res.send("New review created successfully");
   console.log("New review created:", newReview);
 }));
 

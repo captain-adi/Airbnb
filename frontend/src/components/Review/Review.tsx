@@ -23,14 +23,13 @@ function Review({ id }: IReview) {
     mutate(
       { id, data: { rating, comment: data.comment } },
       {
-        onSuccess: (response: any) => {
-          console.log("Review submitted successfully:", response);
+        onSuccess: () => {
+          toast.success("Review submitted successfully!");
           reset();
           setRating(0);
-          toast("Review submitted successfully!");
-        },
+        }, 
         onError: (error: any) => {
-          toast(
+          toast.error(
             error?.response?.data?.message ||
             error?.message ||
             "Something went wrong. Please try again."
