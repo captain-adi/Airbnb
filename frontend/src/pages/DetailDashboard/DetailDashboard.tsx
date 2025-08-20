@@ -78,7 +78,7 @@ function DetailDashboard() {
           Customer Reviews ({data?.reviews.length || 0})
         </h1>
 
-        <Review data={data?.reviews || []} />
+        <Review data={data?.reviews || []} listingId={id ?? ""} />
       </div>
     </div>
   );

@@ -66,6 +66,14 @@ app.post('/api/listings/:id/reviews', validateReview, asyncHandler(async (req, r
   console.log("New review created:", newReview);
 }));
 
+// delete Review
+app.delete('/api/listings/:listingId/reviews/:reviewId', asyncHandler(async (req, res) => {
+  const { listingId, reviewId } = req.params;
+  await Listing.findByIdAndUpdate(listingId,{$pull : {reviews : reviewId}});
+  await Review.findByIdAndDelete(reviewId);
+  res.send("Review deleted successfully");
+}))
+
 // Error handling middleware
 app.use((err,req,res,next)=>{
   const {statusCode = 500,message = "Internal Server Error"} = err;

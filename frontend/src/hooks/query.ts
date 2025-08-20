@@ -58,3 +58,10 @@ export function useCreateReview() {
         mutationFn: ({ id, data }: { id: string; data: { rating: number; comment: string } }) => apiEndpoints.createReview(id, data),
     })
 }
+
+export function useDeleteReview() {
+    return useMutation({
+        mutationKey: ['deleteReview'],
+        mutationFn: ({ listingId, reviewId }: { listingId: string; reviewId: string }) => apiEndpoints.deleteReview(listingId, reviewId),
+    })
+}

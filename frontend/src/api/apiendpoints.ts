@@ -46,6 +46,12 @@ class API_ENDPOINTS  {
         return response.data;
     }
 
+    public async deleteReview(listingId: string, reviewId: string) {
+        const url = this.createURL(`/listings/${listingId}/reviews/${reviewId}`);
+        const response = await axios.delete(url);
+        return response.data;
+    }
+
 }
 
 const apiEndpoints = new API_ENDPOINTS();
