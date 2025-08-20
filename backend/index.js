@@ -25,7 +25,7 @@ app.get('/api/listings', asyncHandler(async (req, res) => {
 //show one listing by id  
 app.get('/api/listings/:id',asyncHandler(async (req,res)=>{
   const {id} = req.params;
-  const listings = await Listing.findById(id);
+  const listings = await Listing.findById(id).populate("reviews");
   res.json(listings)
 }))
 // create new listing

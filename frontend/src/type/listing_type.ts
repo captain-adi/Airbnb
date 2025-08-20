@@ -6,4 +6,5 @@ export interface IListingData {
     image: string;
     country: string;
     location: string;
+    reviews: { _id: string; rating: number; comment: string; createdAt: Date; updatedAt: Date; username? : string}[];
 }

@@ -1,93 +1,72 @@
-import { useCreateReview } from "@/hooks/query";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+import { FlagIcon } from "lucide-react"
+import type { IListingData } from "@/type/listing_type"
 
-interface IReview {
-  id?: string;
-}
-
-function Review({ id }: IReview) {
-  const [rating, setRating] = useState<number>(0);
-  const [hover, setHover] = useState<number | null>(null);
-  const { mutate } = useCreateReview();
-
-  const {
-    register,
-    reset,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<{ comment: string }>();
-
-  const onSubmit = (data : any) => {
-    mutate(
-      { id, data: { rating, comment: data.comment } },
-      {
-        onSuccess: () => {
-          toast.success("Review submitted successfully!");
-          reset();
-          setRating(0);
-        }, 
-        onError: (error: any) => {
-          toast.error(
-            error?.response?.data?.message ||
-            error?.message ||
-            "Something went wrong. Please try again."
-          );
-        }
-      }
-    );
-  };
-
+function Review({ data }: { data: IListingData["reviews"] }) {
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 rounded-2xl shadow-lg">
-      <h2 className="text-2xl font-semibold mb-4 text-center">
-        Leave a Review
-      </h2>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        {/* Star Rating */}
-        <div className="flex justify-center space-x-2">
-          {[...Array(5)].map((_, index) => {
-            const starValue = index + 1;
-            return (
-              <button
-                type="button"
-                key={starValue}
-                onClick={() => setRating(starValue)}
-                onMouseEnter={() => setHover(starValue)}
-                onMouseLeave={() => setHover(null)}
-                className="text-3xl"
-                aria-label={`Rate ${starValue} star${starValue > 1 ? "s" : ""}`}
-              >
-                {starValue <= (hover ?? rating) ? "⭐" : "☆"}
-              </button>
-            );
-          })}
+    <div className="flex flex-col gap-6">
+        {data?.length > 0 ? (
+    data?.map((review) => ( 
+      <div
+        key={review._id}
+        className="border border-gray-800 rounded-xl p-6 shadow-lg w-full"
+      >
+        {/* Top user info */}
+        <div className="flex items-center gap-4">
+          <img
+            src={"https://i.pravatar.cc/50"}
+            alt={review.username}
+            className="w-12 h-12 rounded-full border border-gray-700"
+          />
+          <div>
+            <h3 className="text-lg font-semibold ">
+              {review.username || "Anonymous"}
+            </h3>
+          </div>
         </div>
 
-        {/* Comment Input */}
-        <textarea
-          {...register("comment", { required: "Comment is required" })}
-          placeholder="Write your comment..."
-          rows={6}
-          className={`w-full border rounded-lg p-3 focus:outline-none focus:ring-2 transition ${
-            errors.comment
-              ? "border-red-500 focus:ring-red-400"
-              : "border-gray-300 focus:ring-green-400"
-          }`}
-        ></textarea>
+        {/* Review title, stars & date */}
+        <div className="mt-4">
+          <div className="flex items-center gap-2 text-sm text-gray-400">
+            <div className="flex">
+              {[...Array(5)].map((_, i) => (
+                <svg
+                  key={i}
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill={i < review.rating ? "gold" : "gray"}
+                  className="w-5 h-5"
+                >
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.176 3.62a1 1 0 00.95.69h3.813c.969 0 1.371 1.24.588 1.81l-3.085 2.243a1 1 0 00-.364 1.118l1.177 3.62c.3.921-.755 1.688-1.54 1.118l-3.085-2.243a1 1 0 00-1.176 0l-3.085 2.243c-.785.57-1.84-.197-1.54-1.118l1.177-3.62a1 1 0 00-.364-1.118L2.37 9.047c-.783-.57-.38-1.81.588-1.81h3.813a1 1 0 00.95-.69l1.176-3.62z" />
+                </svg>
+              ))}
+            </div>
+            <span>
+              {new Date(review.createdAt).toLocaleDateString()} at{" "}
+              {new Date(review.createdAt).toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </span>
+          </div>
+        </div>
 
-        {/* Submit Button */}
-        <button
-          type="submit"
-          className="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition"
-          disabled={rating === 0}
-        >
-          Submit Review
-        </button>
-      </form>
+        {/* Comment */}
+        <p className=" mt-3 leading-relaxed text-muted-foreground">{review.comment}</p>
+
+        {/* Actions */}
+        <div className="flex gap-4 mt-4">
+          <button disabled className="px-3 py-1 text-sm text-muted-foreground  hover:text-red-400">
+            Report <FlagIcon className="inline-block w-4 h-4" />
+          </button>
+        </div>
+      </div>
+    ))
+  ) : (
+    <p className="text-gray-400">No reviews yet. Be the first to review!</p>
+  )}
     </div>
-  );
+  )
 }
 
-export default Review;
+export default Review
+
