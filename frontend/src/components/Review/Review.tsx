@@ -25,6 +25,9 @@ function Review({ id }: IReview) {
       {
         onSuccess: (response: any) => {
           console.log("Review submitted successfully:", response);
+          reset();
+          setRating(0);
+          toast("Review submitted successfully!");
         },
         onError: (error: any) => {
           toast(
