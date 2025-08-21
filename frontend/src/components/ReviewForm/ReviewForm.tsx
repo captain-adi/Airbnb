@@ -23,7 +23,7 @@ function ReviewForm({ id }: IReview) {
 
   const onSubmit = (data : any) => {
     mutate(
-      { id, data: { rating, comment: data.comment } },
+      { listingId: id, data: { rating, comment: data.comment } },
       {
         onSuccess: () => {
            queryClient.invalidateQueries({ queryKey: ["getDataById", "/listings"] });
