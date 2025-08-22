@@ -2,10 +2,6 @@ import { User } from "../models/user_models.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import ErrorHandler from "../utils/ErrorHandler.js";
 
-export const login = asyncHandler(async (req, res, next) => {
-  console.log("working fine");
-});
-
 export const ragister = asyncHandler(async (req, res, next) => {
   const { username, email, password } = req.body;
   const existingUser = await User.findOne({ $or: [{ email }, { username }] });
@@ -22,4 +18,36 @@ export const ragister = asyncHandler(async (req, res, next) => {
     success: true,
     message: "user ragistered successfully",
   });
+});
+
+export const login = asyncHandler(async (req, res, next) => {
+  const { email, password } = req.body;
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw new ErrorHandler("Invalid email or password", 401);
+  }
+  const isPasswordCorrect = await user.comparePassword(password);
+  if (!isPasswordCorrect) {
+    throw new ErrorHandler("Invalid email or password", 401);
+  }
+  const accessToken = await user.generateAccessToken();
+
+  const options = {
+    httpOnly: true,
+    secure: true,
+  };
+
+  res
+    .status(200)
+    .cookie("accesstoken", accessToken, options)
+    .json({
+      success: true,
+      message: "Login successful",
+      user: {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+      },
+      accessToken,
+    });
 });
