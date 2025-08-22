@@ -4,6 +4,8 @@ import express from "express";
 import cors from "cors";
 import listingRoutes from "./src/routes/listing_route.js";
 import reviewRoutes from "./src/routes/review_route.js";
+import authRoutes from "./src/routes/auth_route.js"
+import passport from "passport";
 dotenv.config();
 
 const app = express();
@@ -18,9 +20,11 @@ connectDB().then(() => {
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(passport.initialize())
 
 app.use("/api/listings", listingRoutes);
 app.use("/api/listings/:listingId/reviews", reviewRoutes);
+app.use("/api/auth" , authRoutes)
 
 // Error handling middleware
 app.use((err, req, res, next) => {
