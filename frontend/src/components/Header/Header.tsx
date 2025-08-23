@@ -1,6 +1,8 @@
 import { useTheme } from "@/theme/themeProvider"
 import NewListing from "../NewListing/NewListing"
 import { Moon, Sun } from "lucide-react"
+import { Button } from "../ui/button"
+import SignUp from "../SignUp/SignUp"
 
 
 function Header() {
@@ -36,7 +38,8 @@ function Header() {
           }
           
           <button className="text-sm font-medium">Airbnb your home</button>
-          <button>🌐</button>
+         <SignUp/>
+          <Button>Login</Button>
           <div className="border rounded-full px-3 py-1 flex items-center gap-2">
             ☰ <span>👤</span>
           </div>
