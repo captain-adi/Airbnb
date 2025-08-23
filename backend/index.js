@@ -6,6 +6,7 @@ import listingRoutes from "./src/routes/listing_route.js";
 import reviewRoutes from "./src/routes/review_route.js";
 import authRoutes from "./src/routes/auth_route.js"
 import passport from "passport";
+import cookieParser from "cookie-parser";
 dotenv.config();
 
 const app = express();
@@ -17,10 +18,11 @@ connectDB().then(() => {
   console.error("Database connection failed:", err);
 });
 
+app.use(cookieParser());
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(passport.initialize())
+app.use(passport.initialize());
 
 app.use("/api/listings", listingRoutes);
 app.use("/api/listings/:listingId/reviews", reviewRoutes);

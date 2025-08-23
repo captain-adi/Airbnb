@@ -51,3 +51,12 @@ export const login = asyncHandler(async (req, res, next) => {
       accessToken,
     });
 });
+
+export const secure = asyncHandler(async (req, res, next) => {
+
+  console.log("Authenticated user:", req.user);
+  res.status(200).json({
+    success: true,
+    message: "Protected route accessed successfully",
+  });
+});
