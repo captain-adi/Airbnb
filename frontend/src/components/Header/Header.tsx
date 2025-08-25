@@ -12,7 +12,7 @@ import { toast } from "sonner";
 function Header() {
   const { theme, setTheme } = useTheme();
   const { user, setUser } = useAuth();
-  const { mutate: logout } = useLogout();
+  const { mutate: logout ,isPending } = useLogout();
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user_id");
@@ -52,7 +52,7 @@ function Header() {
 
         {/* Search Bar */}
         <div>
-          <NewListing />
+          {user && <NewListing />}
         </div>
 
         {/* Right Menu */}
@@ -68,7 +68,9 @@ function Header() {
 
           {user ? (
             <>
-              <Button onClick={handleLogout}>Logout</Button>
+              <Button className="cursor-pointer" onClick={handleLogout}>
+                {isPending ? "Logging out..." : "Logout"}
+              </Button>
             </>
           ) : (
             <>
