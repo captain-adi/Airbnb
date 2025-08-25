@@ -34,7 +34,7 @@ export const login = asyncHandler(async (req, res, next) => {
 
   const options = {
     httpOnly: true,
-    secure: true,
+    secure: false,
   };
 
   res

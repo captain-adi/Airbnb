@@ -11,49 +11,49 @@ import {
   DialogTrigger,
   DialogFooter,
 } from "../ui/dialog";
+import { useLogin } from "@/hooks/query";
 import { toast } from "sonner";
-import { useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { useState } from "react";
-import axiosInstance from "@/utils/axios";
 
-function SignUp() {
-  const [open,setOpen] = useState<boolean>(false); 
-  const { register, handleSubmit, reset  } = useForm();
-const navigate = useNavigate();
+
+function Login() {
+  const { register, handleSubmit, reset } = useForm();
+  const [open, setOpen] = useState<boolean>(false);
+  const { mutate , isPending } = useLogin();
+  const navigate = useNavigate();
   const onSubmit = async (data: any) => {
-    const response = await axiosInstance.post("/auth/register", data).then((res) => {
-        toast.success(res.data.message);
-        reset();  
-        setOpen(false);
-        navigate("/");
-    }).catch((err) => {
-     toast.error(err.response.data.message);
-    });
+      mutate(data, {
+        onSuccess: (response) => {
+          console.log(response);
+          toast.success(response.message);
+          reset();
+          setOpen(false);
+          navigate("/");
+        },
+        onError: (error: any) => {
+          toast.error(error.response.data.message);
+        }
+      });
   };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button >
-          Sign Up
+         Login
         </Button>
       </DialogTrigger>
       <DialogContent className="w-full max-w-3xl rounded-xl bg-white dark:bg-gray-900 shadow-2xl p-10">
         <DialogHeader>
           <DialogTitle className="text-4xl font-bold">
-            Create an account
+           Log In
           </DialogTitle>
           <DialogDescription className=" text-muted-foreground  mt-2">
-            Fill in your details to create a new account.
+            Fill in your details to log in to your account.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} className="grid gap-8 mt-8">
-          <input
-            type="text"
-            placeholder="Username"
-            {...register("username", { required: "Username is required" })}
-            className="w-full px-6 py-2 border rounded-sm  focus:outline-none dark:bg-gray-800 dark:border-gray-700 dark:text-white"
-          />
           <input
             type="email"
             placeholder="Email"
@@ -68,7 +68,7 @@ const navigate = useNavigate();
           />
           <DialogFooter className="mt-4">
             <Button type="submit" className="px-6 py-4">
-              Sign Up
+             {isPending ? "Logging in..." : "Log In"}
             </Button>
           </DialogFooter>
         </form>
@@ -77,4 +77,4 @@ const navigate = useNavigate();
   );
 }
 
-export default SignUp;
+export default Login;

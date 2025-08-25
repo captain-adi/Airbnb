@@ -52,6 +52,12 @@ class API_ENDPOINTS  {
         return response.data;
     }
 
+    public async login(data: { email: string; password: string }) {
+        const url = this.createURL('/auth/login');
+        const response = await axios.post(url, data,{withCredentials :true});
+        return response.data;
+    }
+
 }
 
 const apiEndpoints = new API_ENDPOINTS();

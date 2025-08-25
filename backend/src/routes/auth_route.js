@@ -5,7 +5,7 @@ import { validateUser } from "../middlewares/schemaValidator.js";
 const router = express.Router();
 
 router.route('/login').post(login)
-router.route("/ragister").post(validateUser,ragister)
+router.route("/register").post(validateUser,ragister)
 router.route('/secure').get(passport.authenticate('jwt', { session: false }), secure)
 
 export default router

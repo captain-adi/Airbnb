@@ -1,5 +1,6 @@
 import apiEndpoints from '@/api/apiendpoints'
 import type { IListingData } from '@/type/listing_type';
+import axiosInstance from '@/utils/axios';
 import {  useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 export function useGetAllData(endpoint : string) {
@@ -63,5 +64,12 @@ export function useDeleteReview() {
     return useMutation({
         mutationKey: ['deleteReview'],
         mutationFn: ({ listingId, reviewId }: { listingId: string; reviewId: string }) => apiEndpoints.deleteReview(listingId, reviewId),
+    })
+}
+
+export function useLogin() {
+    return useMutation({
+        mutationKey: ['login'],
+        mutationFn: (data: { email: string; password: string }) => apiEndpoints.login(data),
     })
 }
