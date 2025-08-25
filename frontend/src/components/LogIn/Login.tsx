@@ -15,9 +15,11 @@ import { useLogin } from "@/hooks/query";
 import { toast } from "sonner";
 import {  useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 
 
 function Login() {
+  const {setUser} = useAuth()
   const { register, handleSubmit, reset } = useForm();
   const [open, setOpen] = useState<boolean>(false);
   const { mutate , isPending } = useLogin();
@@ -27,6 +29,8 @@ function Login() {
         onSuccess: (response) => {
           console.log(response);
           toast.success(response.message);
+          localStorage.setItem("user_id", response.user._id);
+          setUser(response.user._id);
           reset();
           setOpen(false);
           navigate("/");

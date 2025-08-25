@@ -1,16 +1,41 @@
-import { useTheme } from "@/theme/themeProvider"
-import NewListing from "../NewListing/NewListing"
-import { Moon, Sun } from "lucide-react"
-import SignUp from "../SignUp/SignUp"
-import Login from "../LogIn/Login"
-
+import { useTheme } from "@/theme/themeProvider";
+import NewListing from "../NewListing/NewListing";
+import { Moon, Sun } from "lucide-react";
+import SignUp from "../SignUp/SignUp";
+import Login from "../LogIn/Login";
+import { Button } from "../ui/button";
+import { useAuth } from "@/context/AuthContext";
+import { useEffect } from "react";
+import { useLogout } from "@/hooks/query";
+import { toast } from "sonner";
 
 function Header() {
- const { theme, setTheme } = useTheme()
+  const { theme, setTheme } = useTheme();
+  const { user, setUser } = useAuth();
+  const { mutate: logout } = useLogout();
 
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user_id");
+    if (storedUser) {
+      setUser(storedUser);
+    }
+  }, [user]);
+  console.log("Header User:", user);
+  const handleLogout = () => {
+    logout(undefined, {
+      onSuccess: (res) => {
+        localStorage.removeItem("user_id");
+        setUser(null);
+        toast(res.message);
+      },
+      onError: (err : any) => {
+        toast(err.response.data.message);
+      }
+    });
+  };
 
   return (
-     <header className="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-50">
+    <header className="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-50">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
         {/* Logo */}
         <div className="flex items-center gap-2">
@@ -26,27 +51,38 @@ function Header() {
         </div>
 
         {/* Search Bar */}
-      <div>
-        
-      <NewListing/>
-      </div>
+        <div>
+          <NewListing />
+        </div>
 
         {/* Right Menu */}
         <div className="flex items-center gap-4">
-          {
-            theme === "dark" ? ( <Sun className="cursor-pointer text-yellow-300" onClick={() => setTheme("light")} /> ) : ( <Moon className="cursor-pointer" onClick={() => setTheme("dark")} /> )
-          }
-          
-          <button className="text-sm font-medium">Airbnb your home</button>
-         <SignUp/>
-          <Login/>
+          {theme === "dark" ? (
+            <Sun
+              className="cursor-pointer text-yellow-300"
+              onClick={() => setTheme("light")}
+            />
+          ) : (
+            <Moon className="cursor-pointer" onClick={() => setTheme("dark")} />
+          )}
+
+          {user ? (
+            <>
+              <Button onClick={handleLogout}>Logout</Button>
+            </>
+          ) : (
+            <>
+              <SignUp />
+              <Login />
+            </>
+          )}
           <div className="border rounded-full px-3 py-1 flex items-center gap-2">
             ☰ <span>👤</span>
           </div>
         </div>
       </div>
     </header>
-  )
+  );
 }
 
-export default Header
+export default Header;

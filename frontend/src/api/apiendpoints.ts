@@ -1,6 +1,7 @@
 import type { IListingData } from "@/type/listing_type";
 import Api_confige from "./apiconfige";
 import axios from "axios";
+import axiosInstance from "@/utils/axios";
 class API_ENDPOINTS  {
     private createURL(endpoint: string){
         return `${Api_confige.API_BASE_URL}${endpoint}`;
@@ -55,6 +56,11 @@ class API_ENDPOINTS  {
     public async login(data: { email: string; password: string }) {
         const url = this.createURL('/auth/login');
         const response = await axios.post(url, data,{withCredentials :true});
+        return response.data;
+    }
+    public async logout(){
+        const url = this.createURL('/auth/logout');
+        const response = await axiosInstance.post(url);
         return response.data;
     }
 

@@ -52,6 +52,14 @@ export const login = asyncHandler(async (req, res, next) => {
     });
 });
 
+export const logout = asyncHandler(async (req,res,next) => {
+  res.clearCookie("accesstoken");
+  res.status(200).json({
+    success: true,
+    message: "Logout successful",
+  });
+});
+
 export const secure = asyncHandler(async (req, res, next) => {
 
   console.log("Authenticated user:", req.user);

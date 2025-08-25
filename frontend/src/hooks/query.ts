@@ -1,6 +1,5 @@
 import apiEndpoints from '@/api/apiendpoints'
 import type { IListingData } from '@/type/listing_type';
-import axiosInstance from '@/utils/axios';
 import {  useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 export function useGetAllData(endpoint : string) {
@@ -72,4 +71,13 @@ export function useLogin() {
         mutationKey: ['login'],
         mutationFn: (data: { email: string; password: string }) => apiEndpoints.login(data),
     })
+}
+
+export function useLogout(){
+   return useMutation(
+        {
+            mutationKey: ['logout'],
+            mutationFn: () => apiEndpoints.logout(),
+        }
+    )
 }
