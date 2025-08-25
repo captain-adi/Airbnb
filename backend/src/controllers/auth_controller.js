@@ -68,3 +68,15 @@ export const secure = asyncHandler(async (req, res, next) => {
     message: "Protected route accessed successfully",
   });
 });
+
+export const checkLogin = asyncHandler(async (req, res, next) => {
+  res.status(200).json({
+    success: true,
+    message: "User is logged in",
+    user: {
+      _id: req.user._id,
+      username: req.user.username,
+      email: req.user.email,
+    },
+  });
+});

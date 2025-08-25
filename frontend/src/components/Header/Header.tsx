@@ -5,7 +5,6 @@ import SignUp from "../SignUp/SignUp";
 import Login from "../LogIn/Login";
 import { Button } from "../ui/button";
 import { useAuth } from "@/context/AuthContext";
-import { useEffect } from "react";
 import { useLogout } from "@/hooks/query";
 import { toast } from "sonner";
 
@@ -14,12 +13,7 @@ function Header() {
   const { user, setUser } = useAuth();
   const { mutate: logout ,isPending } = useLogout();
 
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user_id");
-    if (storedUser) {
-      setUser(storedUser);
-    }
-  }, [user]);
+
   console.log("Header User:", user);
   const handleLogout = () => {
     logout(undefined, {

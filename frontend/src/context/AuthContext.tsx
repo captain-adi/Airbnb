@@ -1,4 +1,5 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+import axiosInstance from "@/utils/axios";
+import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 
 
 
@@ -11,7 +12,18 @@ const AuthContext = createContext<IAuthContext | undefined>(undefined);
 
 export const AuthContextProvider = ({ children } : {children: ReactNode}) => {
   const [user, setUser] = useState<string | null>(null);
-
+    
+  useEffect(()=>{
+    const checkUser = async ()=>{
+      axiosInstance.get('/auth/me').then((res)=>{
+        setUser(res.data.user);
+      }).catch((err)=>{
+        console.log(err);
+        setUser(null);
+      });
+    }
+    checkUser();
+  },[])
 
   return (
     <AuthContext.Provider value={{ user, setUser }}>
