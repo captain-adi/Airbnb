@@ -4,6 +4,7 @@ import ReviewForm from "@/components/ReviewForm/ReviewForm";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import UpdateListing from "@/components/UpdateListing/UpdateListing";
+import { useAuth } from "@/context/AuthContext";
 import { useGetDataById } from "@/hooks/query";
 import DetailDashboardSkeleton from "@/skeletons/DetailDashboardSkeleton";
 import { useNavigate, useParams } from "react-router-dom";
@@ -12,7 +13,8 @@ function DetailDashboard() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { data, isLoading, error } = useGetDataById("/listings", id);
-  console.log(data)
+  const { user } = useAuth();
+  console.log(data?.owner._id, user?._id);
   const handleDelete = async () => {
     apiEndpoints.deleteData(id).then((response) => {
       if (response.status === 200) {
@@ -58,13 +60,18 @@ function DetailDashboard() {
                 </p>
               </div>
               <div className="flex gap-4 mt-6">
-                <UpdateListing data={data} />
-                <Button
+                {
+                  user?._id === data?.owner?._id && <UpdateListing data={data}  />
+                }
+                {
+                  user?._id === data?.owner?._id &&   <Button
                   onClick={handleDelete}
                   className="bg-red-600 text-white"
                 >
                   Delete
                 </Button>
+                }
+              
               </div>
             </div>
           </div>

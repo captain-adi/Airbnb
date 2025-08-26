@@ -1,18 +1,25 @@
+import { useLogout } from "@/hooks/query";
 import axiosInstance from "@/utils/axios";
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
-
+import { toast } from "sonner";
+interface IUser {
+  _id: string;
+  username: string;
+  email: string;
+}
 
 
 interface IAuthContext {
-  user: string | null;
-  setUser: (user: string | null) => void;
+  user: IUser | null;
+  setUser: (user: IUser | null) => void;
+  logout: () => void;
 }
 
 const AuthContext = createContext<IAuthContext | undefined>(undefined);
 
 export const AuthContextProvider = ({ children } : {children: ReactNode}) => {
-  const [user, setUser] = useState<string | null>(null);
-    
+  const [user, setUser] = useState<IUser | null>(null);
+   const { mutate: logout  } = useLogout();
   useEffect(()=>{
     const checkUser = async ()=>{
       axiosInstance.get('/auth/me').then((res)=>{
@@ -25,12 +32,27 @@ export const AuthContextProvider = ({ children } : {children: ReactNode}) => {
     checkUser();
   },[])
 
+  
+  const handleLogout = () => {
+    logout(undefined, {
+      onSuccess: (res) => {
+        localStorage.removeItem("user_id");
+        setUser(null);
+        toast(res.message);
+      },
+      onError: (err : any) => {
+        toast(err.response.data.message);
+      }
+    });
+  };
+
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+    <AuthContext.Provider value={{ user, setUser, logout: handleLogout }}>
       {children}
     </AuthContext.Provider>
   );
 };
+  
 
 export const useAuth = () => {
   const context = useContext(AuthContext);

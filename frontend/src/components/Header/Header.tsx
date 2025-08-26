@@ -5,28 +5,14 @@ import SignUp from "../SignUp/SignUp";
 import Login from "../LogIn/Login";
 import { Button } from "../ui/button";
 import { useAuth } from "@/context/AuthContext";
-import { useLogout } from "@/hooks/query";
-import { toast } from "sonner";
+
 
 function Header() {
   const { theme, setTheme } = useTheme();
-  const { user, setUser } = useAuth();
-  const { mutate: logout ,isPending } = useLogout();
+  const { user , logout } = useAuth();
 
 
-  console.log("Header User:", user);
-  const handleLogout = () => {
-    logout(undefined, {
-      onSuccess: (res) => {
-        localStorage.removeItem("user_id");
-        setUser(null);
-        toast(res.message);
-      },
-      onError: (err : any) => {
-        toast(err.response.data.message);
-      }
-    });
-  };
+
 
   return (
     <header className="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-50">
@@ -62,8 +48,8 @@ function Header() {
 
           {user ? (
             <>
-              <Button className="cursor-pointer" onClick={handleLogout}>
-                {isPending ? "Logging out..." : "Logout"}
+              <Button className="cursor-pointer" onClick={logout}>
+                Logout
               </Button>
             </>
           ) : (

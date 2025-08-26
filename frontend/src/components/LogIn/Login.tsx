@@ -29,7 +29,7 @@ function Login() {
         onSuccess: (response) => {
           toast.success(response.message);
           localStorage.setItem("user_id", response.user._id);
-          setUser(response.user._id);
+          setUser(response.user);
           reset();
           setOpen(false);
           navigate("/");
