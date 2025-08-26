@@ -15,15 +15,18 @@ import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axiosInstance from "@/utils/axios";
+import { useAuth } from "@/context/AuthContext";
 
 function SignUp() {
   const [open,setOpen] = useState<boolean>(false); 
+  const { setUser } = useAuth();
   const { register, handleSubmit, reset  } = useForm();
 const navigate = useNavigate();
   const onSubmit = async (data: any) => {
-    const response = await axiosInstance.post("/auth/register", data).then((res) => {
+     await axiosInstance.post("/auth/register", data).then((res) => {
         toast.success(res.data.message);
-        reset();  
+        reset();
+        setUser(res.data.user);
         setOpen(false);
         navigate("/");
     }).catch((err) => {

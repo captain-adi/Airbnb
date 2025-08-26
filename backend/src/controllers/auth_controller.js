@@ -13,10 +13,20 @@ export const ragister = asyncHandler(async (req, res, next) => {
     email,
     password,
   });
+   
+  const accessToken = await newUser.generateAccessToken();
 
-  res.status(201).json({
+  res.status(201).cookie("accesstoken", accessToken, {
+    httpOnly: true,
+    secure: false,
+  }).json({
     success: true,
     message: "user ragistered successfully",
+    user: {
+      _id: newUser._id,
+      username: newUser.username,
+      email: newUser.email,
+    },
   });
 });
 
@@ -60,14 +70,7 @@ export const logout = asyncHandler(async (req,res,next) => {
   });
 });
 
-export const secure = asyncHandler(async (req, res, next) => {
 
-  console.log("Authenticated user:", req.user);
-  res.status(200).json({
-    success: true,
-    message: "Protected route accessed successfully",
-  });
-});
 
 export const checkLogin = asyncHandler(async (req, res, next) => {
   res.status(200).json({
