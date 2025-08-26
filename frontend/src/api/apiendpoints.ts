@@ -25,7 +25,7 @@ class API_ENDPOINTS  {
     } 
  
     public async createData(endpoint: string, data: IListingData) : Promise<IListingData> {
-        const url = await axios.post(this.createURL(endpoint), data);
+        const url = await axiosInstance.post(this.createURL(endpoint), data);
         return url.data;
     }
 
