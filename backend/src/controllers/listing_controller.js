@@ -32,5 +32,5 @@ export const updateListing = asyncHandler(async (req, res) => {
   const updatedListing = await Listing.findByIdAndUpdate(id, updatedData, {
     new: true,
   });
-  res.json(updatedListing);
+  res.status(200).json({message : "Listing updated successfully", listing : updatedListing , success : true});
 });
