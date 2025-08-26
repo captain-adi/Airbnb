@@ -13,17 +13,15 @@ import {
 } from "../ui/dialog";
 import { useLogin } from "@/hooks/query";
 import { toast } from "sonner";
-import {  useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useLoginDialog } from "@/context/LoginDialogContext";
 import { useAuth } from "@/context/AuthContext";
 
 
 function Login() {
   const {setUser} = useAuth()
   const { register, handleSubmit, reset } = useForm();
-  const [open, setOpen] = useState<boolean>(false);
+ const { open, setOpen } = useLoginDialog();
   const { mutate , isPending } = useLogin();
-  const navigate = useNavigate();
   const onSubmit = async (data: any) => {
       mutate(data, {
         onSuccess: (response) => {
@@ -32,7 +30,6 @@ function Login() {
           setUser(response.user);
           reset();
           setOpen(false);
-          navigate("/");
         },
         onError: (error: any) => {
           toast.error(error.response.data.message);

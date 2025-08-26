@@ -4,12 +4,16 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
+import { useLoginDialog } from "@/context/LoginDialogContext";
+import { useAuth } from "@/context/AuthContext";
 
 interface IReview {
   id?: string;
 }
 
 function ReviewForm({ id }: IReview) {
+  const {  setOpen } = useLoginDialog();
+  const { user } = useAuth();
   const [rating, setRating] = useState<number>(0);
   const [hover, setHover] = useState<number | null>(null);
   const { mutate } = useCreateReview();
@@ -22,6 +26,10 @@ function ReviewForm({ id }: IReview) {
   } = useForm<{ comment: string }>();
 
   const onSubmit = (data : any) => {
+   if (!user) {
+      setOpen(true);
+      return ;
+    }
     mutate(
       { listingId: id, data: { rating, comment: data.comment } },
       {

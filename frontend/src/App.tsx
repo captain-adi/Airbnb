@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ThemeProvider } from './theme/themeProvider'
 import { Toaster } from './components/ui/sonner'
 import { AuthContextProvider } from './context/AuthContext'
+import { LoginDialogContextProvider } from './context/LoginDialogContext'
 const queryClient = new QueryClient()
 function App() {
 
@@ -15,10 +16,12 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme='dark'>
         <AuthContextProvider>
-          <Toaster position='top-right' />
-          <Header />
-          <Outlet />
-          <Footer />
+          <LoginDialogContextProvider>
+            <Toaster position='top-right' />
+            <Header />
+            <Outlet />
+            <Footer />
+          </LoginDialogContextProvider>
         </AuthContextProvider>
       </ThemeProvider>
     </QueryClientProvider>
