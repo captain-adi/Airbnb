@@ -8,8 +8,14 @@ export const showAllListings = asyncHandler(async (req, res) => {
 
 export const showListingById = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  const listings = await Listing.findById(id).populate("reviews").populate({path : 'owner' , select : "-password"});
-  res.json(listings);
+  const listing = await Listing.findById(id)
+    .populate("reviews")
+    .populate({ path: "owner", select: "-password" })
+    .populate({
+      path: "reviews",
+      populate: { path: "author", select: "-password" }
+    });
+  res.json(listing);
 });
 
 export const createListing = asyncHandler(async (req, res) => {

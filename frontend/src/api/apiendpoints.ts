@@ -43,13 +43,13 @@ class API_ENDPOINTS  {
 
     public async createReview(listingId: string, data: { rating: number; comment: string }) {
         const url = this.createURL(`/listings/${listingId}/reviews`);
-        const response = await axios.post(url, data);
+        const response = await axiosInstance.post(url, data);
         return response.data;
     }
 
     public async deleteReview(listingId: string, reviewId: string) {
         const url = this.createURL(`/listings/${listingId}/reviews/${reviewId}`);
-        const response = await axios.delete(url);
+        const response = await axiosInstance.delete(url);
         return response.data;
     }
 

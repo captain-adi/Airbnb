@@ -15,12 +15,12 @@ const queryClient = useQueryClient();
   const {mutate} = useDeleteReview() ;
   const deleteReview = (reviewId: string)=>{
     mutate({ listingId:listingId, reviewId },{
-      onSuccess: () => {
-        toast.success("Review deleted successfully");
+      onSuccess: (response) => {
+        toast.success(response.message);
          queryClient.invalidateQueries({ queryKey: ["getDataById", "/listings"] });
       },
-      onError: () => {
-        toast.error("Error deleting review");
+      onError: (error : any) => {
+        toast.error(error.response.data.message);
       }
     });
   }
@@ -38,16 +38,16 @@ const queryClient = useQueryClient();
           <div className="flex  items-center gap-4">
           <img
             src={"https://i.pravatar.cc/50"}
-            alt={review.username}
+            alt={review.author.username || "Anonymous"}
             className="w-12 h-12 rounded-full border border-gray-700"
           />
           <div>
             <h3 className="text-lg font-semibold ">
-              {review.username || "Anonymous"}
+              {review.author.username || "Anonymous"}
             </h3>
           </div>
           </div>
-          <Button onClick={() => deleteReview(review._id)}>delete</Button>
+          <Button onClick={() => deleteReview(review._id)} className="cursor-pointer">delete</Button>
         </div>
 
         {/* Review title, stars & date */}
