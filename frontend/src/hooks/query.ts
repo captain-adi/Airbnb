@@ -25,7 +25,16 @@ export function useGetDataById(endpoint : string, id : string) {
 export function useCreateData( ) {
     return useMutation({
         mutationKey: ['createData'],
-        mutationFn: (data : IListingData) => apiEndpoints.createData('/listings', data),
+        mutationFn: (data : IListingData) =>{
+            const formData = new FormData();
+            formData.append("image", data.image[0]);
+            formData.append("title", data.title);
+            formData.append("description", data.description);
+            formData.append("price", data.price.toString());
+            formData.append("location", data.location);
+            formData.append("country", data.country);
+            return apiEndpoints.createData('/listings', formData);
+        }
     })
 }
 

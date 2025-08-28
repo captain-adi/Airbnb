@@ -24,13 +24,17 @@ class API_ENDPOINTS  {
         return this.fetchData(url);
     } 
  
-    public async createData(endpoint: string, data: IListingData) : Promise<IListingData> {
-        const url = await axiosInstance.post(this.createURL(endpoint), data);
+    public async createData(endpoint: string, data: FormData) : Promise<IListingData> {
+        const url = await axiosInstance.post(this.createURL(endpoint), data ,{
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
         return url.data;
     }
 
         public async deleteData(id: string){
-            const response = await axios.delete(this.createURL(`/listings/${id}`));
+            const response = await axiosInstance.delete(this.createURL(`/listings/${id}`));
             return response;
         }
 

@@ -1,6 +1,7 @@
 import { Listing } from "../models/listing_model.js";
 import asyncHandler from "../utils/asyncHandler.js";
-
+import uploadToCloudinary from "../utils/cloudinary.js";
+import ErrorHandler from "../utils/ErrorHandler.js";
 export const showAllListings = asyncHandler(async (req, res) => {
   const listings = await Listing.find({});
   res.json(listings);
@@ -21,7 +22,8 @@ export const showListingById = asyncHandler(async (req, res) => {
 export const createListing = asyncHandler(async (req, res) => {
   const data = req.body;
   const ownerId = req.user._id;
-  const newListing = await Listing.create({ ...data, owner: ownerId });
+  const imageUrl = await uploadToCloudinary(req.file.path);
+  const newListing = await Listing.create({ ...data, owner: ownerId, image: imageUrl });
   console.log(newListing);
   res.send("new listing created");
 });
