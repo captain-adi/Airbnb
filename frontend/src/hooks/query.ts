@@ -57,7 +57,24 @@ export function useDeleteData() {
 export function useUpdateData(){
     return useMutation({
         mutationKey: ['updateData'],
-        mutationFn: ({ id, data }: { id: string; data: IListingData }) => apiEndpoints.updateData(id, data),
+        mutationFn: ({ id, data }: { id: string; data: IListingData }) => {
+            const formData = new FormData();
+
+            // If a new file is selected, use it. Otherwise, send the existing image URL.
+            if (data.image && typeof data.image !== "string" && data.image[0]) {
+                formData.append("image", data.image[0]);
+            } else if (typeof data.image === "string") {
+                formData.append("image", data.image); // send the URL as a string
+            }
+
+            formData.append("title", data.title);
+            formData.append("description", data.description);
+            formData.append("price", data.price.toString());
+            formData.append("location", data.location);
+            formData.append("country", data.country);
+
+            return apiEndpoints.updateData(id, formData);
+        }
     })
 }
 

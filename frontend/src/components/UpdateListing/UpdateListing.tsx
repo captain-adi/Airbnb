@@ -22,7 +22,7 @@ interface IUpdateListingProps {
 function UpdateListing({ data }: IUpdateListingProps) {
   const [open, setOpen] = useState(false);
   const { register, handleSubmit, reset , formState: { errors } } = useForm<IListingData>();
-  const { mutate } = useUpdateData();
+  const { mutate,isPending } = useUpdateData();
   const queryClient = useQueryClient();
 
   useEffect(()=>{
@@ -66,6 +66,7 @@ function UpdateListing({ data }: IUpdateListingProps) {
             <input
               {...register("title", { required: "Title is required" })}
               type="text"
+              disabled={isPending}
               placeholder="Listing Title"
               className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 ${
                 errors.title ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-green-400"
@@ -75,6 +76,7 @@ function UpdateListing({ data }: IUpdateListingProps) {
             <textarea
               {...register("description",{required : "Description is required"})}
               cols={30}
+              disabled={isPending}
               placeholder="Listing Description"
               className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 ${
                 errors.description ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-green-400"
@@ -84,6 +86,7 @@ function UpdateListing({ data }: IUpdateListingProps) {
             <input
               {...register("price", { valueAsNumber: true, required: "Price is required" })}
               type="number"
+              disabled={isPending}
               placeholder="Listing Price"
               className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 ${
                 errors.price ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-green-400"
@@ -93,6 +96,7 @@ function UpdateListing({ data }: IUpdateListingProps) {
             <input
               {...register("location", { required: "Location is required" })}
               type="text"
+              disabled={isPending}
               placeholder="Listing Location"
               className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 ${
                 errors.location ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-green-400"
@@ -100,7 +104,8 @@ function UpdateListing({ data }: IUpdateListingProps) {
             />
             <input
               {...register("image")}
-              type="text"
+              type="file"
+              disabled={isPending}
               placeholder="Listing Image URL"
               className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 ${
                 errors.image ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-green-400"
@@ -109,18 +114,21 @@ function UpdateListing({ data }: IUpdateListingProps) {
             <input
               {...register("country", { required: "Country is required" })}
               type="text"
+              disabled={isPending}
               placeholder="Listing Country"
               className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 ${
                 errors.country ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-green-400"
               }`}
             />
-
-            <Button
+       {
+        isPending  ?<Button disabled>Updating...</Button> :  <Button
               type="submit"
               className="py-6 px-6 cursor-pointer"
             >
               Update Listing
             </Button>
+       }
+           
           </form>
         </div>
       </DialogContent>

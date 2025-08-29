@@ -38,9 +38,13 @@ class API_ENDPOINTS  {
             return response;
         }
 
-    public async updateData(id: string, data: IListingData) : Promise<IListingData> {
+    public async updateData(id: string, data: FormData) : Promise<IListingData> {
         const url = this.createURL(`/listings/${id}`);
-        const response = await axiosInstance.patch(url, data);
+        const response = await axiosInstance.patch(url, data , {
+            headers : {
+                "Content-Type" : "multipart/form-data"
+            }
+        });
         return response.data;
     }
 
