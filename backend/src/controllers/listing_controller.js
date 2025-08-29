@@ -37,8 +37,11 @@ export const deleteListing = asyncHandler(async (req, res) => {
 export const updateListing = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const updatedData = req.body;
-  const imageUrl = await uploadToCloudinary(req.file.path);
-  const updatedListing = await Listing.findByIdAndUpdate(id, { ...updatedData, image: imageUrl }, {
+  if (req.file) {
+    const imageUrl = await uploadToCloudinary(req.file.path);
+    updatedData.image = imageUrl;
+  }
+  const updatedListing = await Listing.findByIdAndUpdate(id, updatedData, {
     new: true,
   });
   res.status(200).json({message : "Listing updated successfully", listing : updatedListing , success : true});
