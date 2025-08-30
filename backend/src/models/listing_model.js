@@ -37,6 +37,17 @@ const listingSchema = new mongoose.Schema({
         type : mongoose.Schema.Types.ObjectId,
         ref : "User",
         required : true
+     },
+     geoLocation: {
+         type: {
+             type: String,
+             enum: ["Point"],
+             required: true
+         },
+         coordinates: {
+             type: [Number],
+             required: true
+         }
      }
 },{timestamps : true});
 

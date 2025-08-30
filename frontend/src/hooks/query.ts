@@ -22,10 +22,10 @@ export function useGetDataById(endpoint : string, id : string) {
 }
 
 
-export function useCreateData( ) {
+export function useCreateData() {
     return useMutation({
         mutationKey: ['createData'],
-        mutationFn: (data : IListingData) =>{
+        mutationFn: async (data: IListingData) => {
             const formData = new FormData();
             formData.append("image", data.image[0]);
             formData.append("title", data.title);
@@ -33,9 +33,21 @@ export function useCreateData( ) {
             formData.append("price", data.price.toString());
             formData.append("location", data.location);
             formData.append("country", data.country);
+
+            // Wait for coordinates before submitting
+            const coords = await apiEndpoints.getCoordinates(data.location);
+            if (coords && typeof coords.lat === 'number' && typeof coords.lng === 'number') {
+                const lat = coords.lat;
+                const lng = coords.lng;
+                formData.append("geoLocation", JSON.stringify({
+                    type: "Point",
+                    coordinates: [lng, lat] // GeoJSON: [longitude, latitude]
+                }));
+            }
+
             return apiEndpoints.createData('/listings', formData);
         }
-    })
+    });
 }
 
 

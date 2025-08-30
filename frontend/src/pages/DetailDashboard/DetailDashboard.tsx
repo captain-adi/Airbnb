@@ -1,4 +1,5 @@
 import apiEndpoints from "@/api/apiendpoints";
+import Map from "@/components/Map/Map";
 import Review from "@/components/Review/Review";
 import ReviewForm from "@/components/ReviewForm/ReviewForm";
 import { Button } from "@/components/ui/button";
@@ -12,10 +13,11 @@ import { useNavigate, useParams } from "react-router-dom";
 function DetailDashboard() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { data, isLoading, error } = useGetDataById("/listings", id);
+  const { data, isLoading, error } = useGetDataById("/listings", id ?? "");
   const { user } = useAuth();
   console.log(data?.owner._id, user?._id);
   const handleDelete = async () => {
+    if (!id) return;
     apiEndpoints.deleteData(id).then((response) => {
       if (response.status === 200) {
         navigate("/");
@@ -86,15 +88,9 @@ function DetailDashboard() {
   <CardContent className="flex items-center gap-4 p-4">
     {/* Avatar / Image */}
     <div className="w-14 h-14 text-black rounded-full bg-gray-400 flex items-center justify-center text-lg font-semibold  dark:bg-gray-200 ">
-      {data?.owner?.profilePicture ? (
-        <img
-          src={data?.owner?.profilePicture}
-          alt={data?.owner?.username}
-          className="w-full h-full rounded-full object-cover"
-        />
-      ) : (
+ 
         <span>{data?.owner?.username?.[0]?.toUpperCase() || "?"}</span>
-      )}
+     
     </div>
 
     {/* Details */}
@@ -103,7 +99,7 @@ function DetailDashboard() {
         Hosted by: {data?.owner?.username}
       </p>
       <p className="text-sm text-muted-foreground">
-        Joined {new Date(data?.owner?.createdAt).toLocaleDateString(undefined, {
+        Joined {new Date(data?.owner?.createdAt ?? "").toLocaleDateString(undefined, {
           year: "numeric",
           month: "long",
           day: "numeric"
@@ -112,6 +108,7 @@ function DetailDashboard() {
     </div>
   </CardContent>
 </Card>
+<Map coordinates={data?.geoLocation?.coordinates ? [data.geoLocation.coordinates[1], data.geoLocation.coordinates[0]] : [28.6139, 77.209]} />
 
       </div>
       <ReviewForm id={id} />

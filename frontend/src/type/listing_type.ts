@@ -14,4 +14,8 @@ export interface IListingData {
         createdAt: Date;
         updatedAt: Date;
     };
+    geoLocation: {
+       type: "Point";
+       coordinates: [number, number];
+    };
 }

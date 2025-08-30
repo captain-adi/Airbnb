@@ -6,7 +6,11 @@ const listingSchema =Joi.object({
     price: Joi.number().min(0).required(),
     location: Joi.string().min(2).max(100).trim().required(),
     country: Joi.string().min(2).max(100).trim().required(),
-    image : Joi.string().allow(null, '')
+    image : Joi.string().allow(null, ''),
+    geoLocation: Joi.object({
+        type: Joi.string().valid("Point").required(),
+        coordinates: Joi.array().length(2).items(Joi.number()).required()
+    })
 })
 
 const reviewSchema = Joi.object({

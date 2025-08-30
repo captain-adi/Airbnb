@@ -72,6 +72,12 @@ class API_ENDPOINTS  {
         return response.data;
     }
 
+    public async getCoordinates(address: string): Promise<{ lat: number; lng: number }> {
+        const url = `http://api.openweathermap.org/geo/1.0/direct?q=${address}&limit=1&appid=${import.meta.env.VITE_GEOCODING_API_KEY}`
+        const response = await this.fetchData(url);
+        return response;
+    }
+
 }
 
 const apiEndpoints = new API_ENDPOINTS();
