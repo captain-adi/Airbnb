@@ -15,7 +15,6 @@ function DetailDashboard() {
   const navigate = useNavigate();
   const { data, isLoading, error } = useGetDataById("/listings", id ?? "");
   const { user } = useAuth();
-  console.log(data?.owner._id, user?._id);
   const handleDelete = async () => {
     if (!id) return;
     apiEndpoints.deleteData(id).then((response) => {
