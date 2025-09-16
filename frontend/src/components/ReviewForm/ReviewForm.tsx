@@ -12,7 +12,7 @@ interface IReview {
 }
 
 function ReviewForm({ id }: IReview) {
-  const {  setOpen } = useLoginDialog();
+  const { setOpen } = useLoginDialog();
   const { user } = useAuth();
   const [rating, setRating] = useState<number>(0);
   const [hover, setHover] = useState<number | null>(null);
@@ -25,27 +25,33 @@ function ReviewForm({ id }: IReview) {
     formState: { errors },
   } = useForm<{ comment: string }>();
 
-  const onSubmit = (data : any) => {
-   if (!user) {
+  const onSubmit = (data: any) => {
+    if (!user) {
       setOpen(true);
-      return ;
+      return;
+    }
+    if (!id) {
+      toast.error("Listing ID is missing. Cannot submit review.");
+      return;
     }
     mutate(
       { listingId: id, data: { rating, comment: data.comment } },
       {
         onSuccess: () => {
-           queryClient.invalidateQueries({ queryKey: ["getDataById", "/listings"] });
+          queryClient.invalidateQueries({
+            queryKey: ["getDataById", "/listings"],
+          });
           toast.success("Review submitted successfully!");
           reset();
           setRating(0);
-        }, 
+        },
         onError: (error: any) => {
           toast.error(
             error?.response?.data?.message ||
-            error?.message ||
-            "Something went wrong. Please try again."
+              error?.message ||
+              "Something went wrong. Please try again."
           );
-        }
+        },
       }
     );
   };
@@ -93,9 +99,8 @@ function ReviewForm({ id }: IReview) {
           type="submit"
           className="cursor-pointer"
           disabled={rating === 0}
-
         >
-          Submit Review 
+          Submit Review
         </Button>
       </form>
     </div>

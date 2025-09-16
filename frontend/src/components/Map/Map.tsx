@@ -1,4 +1,11 @@
-import { MapContainer, TileLayer, useMapEvents, Marker, Popup, useMap } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  useMapEvents,
+  Marker,
+  Popup,
+  useMap,
+} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { useEffect, useState } from "react";
 
@@ -8,7 +15,8 @@ interface IMapProps {
 
 export default function Map({ coordinates }: IMapProps) {
   // Use coordinates prop as the initial and current marker position
-  const [markerPosition, setMarkerPosition] = useState<[number, number]>(coordinates);
+  const [markerPosition, setMarkerPosition] =
+    useState<[number, number]>(coordinates);
 
   // If coordinates prop changes, update marker position
   useEffect(() => {
@@ -27,7 +35,10 @@ export default function Map({ coordinates }: IMapProps) {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <LocationMarker markerPosition={markerPosition} setMarkerPosition={setMarkerPosition} />
+        <LocationMarker
+          markerPosition={markerPosition}
+          setMarkerPosition={setMarkerPosition}
+        />
         <Recenter position={markerPosition} />
       </MapContainer>
     </div>
@@ -42,7 +53,7 @@ function LocationMarker({
   setMarkerPosition: (pos: [number, number]) => void;
 }) {
   useMapEvents({
-    click(e: { latlng: { lat: number; lng: number; }; }) {
+    click(e: { latlng: { lat: number; lng: number } }) {
       setMarkerPosition([e.latlng.lat, e.latlng.lng]);
     },
   });
@@ -50,7 +61,8 @@ function LocationMarker({
   return (
     <Marker position={markerPosition}>
       <Popup>
-        📍 Marked Location<br />
+        📍 Marked Location
+        <br />
         Lat: {markerPosition[0]}
         <br />
         Lng: {markerPosition[1]}
