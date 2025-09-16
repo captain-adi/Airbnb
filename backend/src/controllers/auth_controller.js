@@ -13,21 +13,25 @@ export const ragister = asyncHandler(async (req, res, next) => {
     email,
     password,
   });
-   
+
   const accessToken = await newUser.generateAccessToken();
 
-  res.status(201).cookie("accesstoken", accessToken, {
-    httpOnly: true,
-    secure: false,
-  }).json({
-    success: true,
-    message: "user ragistered successfully",
-    user: {
-      _id: newUser._id,
-      username: newUser.username,
-      email: newUser.email,
-    },
-  });
+  res
+    .status(201)
+    .cookie("accesstoken", accessToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+    })
+    .json({
+      success: true,
+      message: "user ragistered successfully",
+      user: {
+        _id: newUser._id,
+        username: newUser.username,
+        email: newUser.email,
+      },
+    });
 });
 
 export const login = asyncHandler(async (req, res, next) => {
@@ -44,7 +48,8 @@ export const login = asyncHandler(async (req, res, next) => {
 
   const options = {
     httpOnly: true,
-    secure: false,
+    secure: true,
+    sameSite: "none",
   };
 
   res
@@ -62,15 +67,13 @@ export const login = asyncHandler(async (req, res, next) => {
     });
 });
 
-export const logout = asyncHandler(async (req,res,next) => {
+export const logout = asyncHandler(async (req, res, next) => {
   res.clearCookie("accesstoken");
   res.status(200).json({
     success: true,
     message: "Logout successful",
   });
 });
-
-
 
 export const checkLogin = asyncHandler(async (req, res, next) => {
   res.status(200).json({
